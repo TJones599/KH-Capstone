@@ -16,6 +16,36 @@ namespace KH_Capstone_DAL
             this.logPath = logPath;
         }
 
+        public UserDO ViewByUserName(string UserName)
+        {
+            UserDO user = new UserDO();
+
+            try
+            {
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_BY_USERNAME", sqlCon))
+                {
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCMD.Parameters.AddWithValue("UserName", UserName);
+
+                    sqlCon.Open();
+
+                    using (SqlDataReader reader = sqlCMD.ExecuteReader())
+                    {
+                        if(reader.Read())
+                        {
+                            user = Mapper.MapSingleUser(reader);
+                        }
+                    }
+                }
+            }
+            catch(SqlException sqlEx)
+            {
+
+            }
+            return user;
+        }
+
         public UserDO ViewSingleUser(int id)
         {
             UserDO user = new UserDO();

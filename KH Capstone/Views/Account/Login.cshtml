@@ -1,0 +1,24 @@
+﻿@using KH_Capstone.Models
+@model Login
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.LabelFor(model => Model.UserName)
+    <div class="form-group">
+        @Html.TextBoxFor(model => Model.UserName, new {@class = "form-control"})
+        @Html.ValidationMessageFor(model => Model.UserName, "", new { @class = "text-danger" });
+    </div>
+
+    @Html.LabelFor(model => Model.Password)
+    <div class="form-group">
+        @Html.PasswordFor(model => Model.Password, new { @class = "form-control" });
+        @Html.ValidationMessageFor(model => Model.Password, "", new { @class = "text-danger" });
+    </div>
+
+    <input type="submit" value="Login" class="btn btn-success" />
+}

@@ -65,11 +65,11 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
-        public static UserDO UserPOtoDO(UserDO from)
+        public static UserDO UserPOtoDO(UserPO from)
         {
             UserDO to = new UserDO();
 
-            to.UserId = from.UserId;
+            to.UserId = from.UserID;
             to.UserName = from.UserName;
             to.Password = from.Password;
             to.Role = from.Role;
@@ -89,5 +89,21 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
+        public static List<UserPO> UserDOListToPO(List<UserDO> from)
+        {
+            List<UserPO> to = new List<UserPO>();
+
+            foreach(UserDO user in from)
+            {
+                UserPO temp = new UserPO();
+
+                temp.UserID = user.UserId;
+                temp.UserName = user.UserName;
+                temp.Password = null;
+                temp.Role = user.Role;
+            }
+
+            return to;
+        }
     }
 }

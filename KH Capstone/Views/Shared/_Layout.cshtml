@@ -23,16 +23,40 @@
                     <li>
                         @Html.ActionLink("Home", "Index", "Home")
                     </li>
+                    <li>
+                        @Html.ActionLink("Enemies", "Enemies", "Validation")
+                    </li>
+                    <li>
+                        @Html.ActionLink("Items", "Items", "Validation")
+                    </li>
+                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 1)
+                    {
+                        <li>
+                            @Html.ActionLink("Create Item", "NewItem", "Creation")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Create Enemy", "NewEnemy", "Creation")
+                        </li>
+                    }
                     @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
                     {
                         <li>
-                            @Html.ActionLink("Enemies", "Enemies", "Validation")
+                            @Html.ActionLink("Validate Enemies", "Enemies", "Validation")
                         </li>
                         <li>
-                            @Html.ActionLink("Items", "Items", "Validation")
+                            @Html.ActionLink("Validate Items", "Items", "Validation")
+                        </li>
+                    }
+                    @if (!(Session["Role"] is null) && (int)Session["Role"] == 3)
+                    {
+                        <li>
+                            @Html.ActionLink("Delete User", "RemoveUser", "Account")
                         </li>
                         <li>
-                            @Html.ActionLink("tbd", "", "")
+                            @Html.ActionLink("Delete Enemy", "RemoveEnemy", "Validation")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Delete Item", "RemoveItem", "Validation")
                         </li>
                     }
                 </ul>
