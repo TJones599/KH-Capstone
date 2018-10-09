@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html style="background-color:darkslategrey">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:darkslategrey;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -24,42 +24,52 @@
                         @Html.ActionLink("Home", "Index", "Home")
                     </li>
                     <li>
-                        @Html.ActionLink("Enemies", "Enemies", "Validation")
+                        @Html.ActionLink("Enemies", "Index", "Enemy")
                     </li>
                     <li>
-                        @Html.ActionLink("Items", "Items", "Validation")
+                        @Html.ActionLink("Items", "Index", "Item")
                     </li>
                     @if (!(Session["Role"] is null) && (int)Session["Role"] >= 1)
                     {
                         <li>
-                            @Html.ActionLink("Create Item", "NewItem", "Creation")
+                            @Html.ActionLink("Create Item", "CreateItem", "Item")
                         </li>
                         <li>
-                            @Html.ActionLink("Create Enemy", "NewEnemy", "Creation")
+                            @Html.ActionLink("Create Enemy", "NewEnemy", "Enemy")
                         </li>
                     }
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
-                    {
-                        <li>
-                            @Html.ActionLink("Validate Enemies", "Enemies", "Validation")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Validate Items", "Items", "Validation")
-                        </li>
-                    }
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] == 3)
-                    {
-                        <li>
-                            @Html.ActionLink("Delete User", "RemoveUser", "Account")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Delete Enemy", "RemoveEnemy", "Validation")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Delete Item", "RemoveItem", "Validation")
-                        </li>
-                    }
+                    <li>
+
+                        @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
+                                    @if((int)Session["Role"]==3)
+                                    {<text> Admin </text>}
+                                    else
+                                    {<text> Mod </text>}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        @Html.ActionLink("Validate Enemies", "ViewUnvalidatedEnemy", "Enemy")
+                                    </li>
+                                    <li>
+                                        @Html.ActionLink("Validate Items", "ViewUnvalidatedItems", "Item")
+                                    </li>
+
+                                    @if (!(Session["Role"] is null) && (int)Session["Role"] == 3)
+                                    {
+                                        <li>
+                                            @Html.ActionLink("Delete User", "RemoveUser", "Account")
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </li>
                 </ul>
+
                 <ul class="nav navbar-nav navbar-right">
                     @if (!(Session["UserName"] is null))
                     {
@@ -86,7 +96,7 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
+        <footer style="color:white;">
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>

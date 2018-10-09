@@ -1,0 +1,27 @@
+﻿@using KH_Capstone.Models
+@model ItemPO
+@{
+    ViewBag.Title = "CreateItem";
+}
+
+<h2>Create new item:</h2>
+
+@using (Html.BeginForm("CreateItem", "Item", FormMethod.Post))
+{
+    @Html.LabelFor(model => Model.Name)
+    <div>
+        @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.Description)
+    <div>
+        @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.Purchasable)
+    <div>
+        <text style="color:black;">True/False</text>
+        @Html.TextBoxFor(model => Model.Purchasable, new { @class = "form-control" })
+    </div>
+    <br />
+    <input type="submit" value="Create" class="btn btn-success" />
+}
+

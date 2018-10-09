@@ -14,7 +14,7 @@ namespace KH_Capstone_DAL.Mappers
             to.Location = from["Location"] as string;
             to.Description = from["Description"] as string;
             to.ImagePath = from["ImagePath"] as string;
-            to.Validated = (bool)from[""];
+            to.Validated = (bool)from["Validated"];
 
             return to;
         }
@@ -36,7 +36,7 @@ namespace KH_Capstone_DAL.Mappers
             ItemDO to = new ItemDO();
 
             to.ItemID = (int)from["ItemID"];
-            to.Name = from["Name"] as string;
+            to.Name = from["ItemName"] as string;
             to.Description = from["Description"] as string;
             to.ImagePath = from["Image"] as string;
             to.Purchasable = (bool)from["Purchasable"];

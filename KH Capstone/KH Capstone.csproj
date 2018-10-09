@@ -148,8 +148,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EnemyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValidateController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,6 +202,16 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Enemy\Index.cshtml" />
+    <Content Include="Views\Enemy\ViewEnemy.cshtml" />
+    <Content Include="Views\Enemy\NewEnemy.cshtml" />
+    <Content Include="Views\Enemy\UpdateEnemy.cshtml" />
+    <Content Include="Views\Enemy\ViewUnvalidatedEnemy.cshtml" />
+    <Content Include="Views\Item\Index.cshtml" />
+    <Content Include="Views\Item\ViewItem.cshtml" />
+    <Content Include="Views\Item\ViewUnvalidatedItems.cshtml" />
+    <Content Include="Views\Item\CreateItem.cshtml" />
+    <Content Include="Views\Item\UpdateItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

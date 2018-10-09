@@ -1,0 +1,45 @@
+﻿@using KH_Capstone.Models
+@model List<EnemyPO>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="color:white;">Enemy List</h2>
+<table class="table">
+    <tbody style="background-color: cadetblue; color: lightcyan;">
+        @foreach (EnemyPO enemy in Model)
+        {
+            if (enemy.Validated == true)
+            {
+                <tr>
+                    <td rowspan="2">
+                        Image
+                    </td>
+                    <td>
+                        <text style="color:black;">Name: </text><u>@Html.ActionLink(enemy.Name, "ViewEnemy", "Enemy", new { id = enemy.EnemyID }, new { @style = "color: lightcyan" })</u>
+                    </td>
+                    <td>
+                        <text style="color:black;">World: </text>@enemy.Location
+                    </td>
+                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
+                    {
+                        <td>
+                            @Html.ActionLink("Update", "UpdateEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-success" })
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @enemy.Description
+                    </td>
+                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 3)
+                    {
+                        <td>
+                            @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger" })
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>

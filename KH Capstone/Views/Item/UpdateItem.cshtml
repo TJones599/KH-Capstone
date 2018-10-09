@@ -1,0 +1,36 @@
+﻿@using KH_Capstone.Models
+@model ItemPO
+@{
+    ViewBag.Title = "UpdateItem";
+}
+
+<h2>Update @Model.Name</h2>
+
+@using (Html.BeginForm("UpdateItem", "Item", FormMethod.Post))
+{
+    @Html.HiddenFor(model => Model.ItemID)
+
+    @Html.LabelFor(model => Model.Name)
+    <div>
+        @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.Description)
+    <div>
+        @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.ImagePath)
+    <div>
+        @Html.TextBoxFor(model => Model.ImagePath, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.Purchasable)
+    <div>
+        @Html.TextBoxFor(model => Model.Purchasable, new { @class = "form-control" })
+    </div>
+    @Html.LabelFor(model => Model.Validated)
+    <div>
+        @Html.TextBoxFor(model => Model.Validated, new { @class = "form-control" })
+    </div>
+    <br />
+    <input type="submit"value="Update" class="btn btn-success" />
+}
+

@@ -8,6 +8,7 @@ html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
+      background-color: darkblue;
 }
 body {
   margin: 0;
@@ -1085,8 +1086,8 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #333;
-  background-color: #fff;
+  color: white;
+  background-color: darkslategray;
 }
 input,
 button,
@@ -1424,8 +1425,8 @@ ol ol {
   margin-bottom: 0;
 }
 .list-unstyled {
-  padding-left: 0;
-  list-style: none;
+    padding-left: 0;
+    list-style: none;
 }
 .list-inline {
   padding-left: 0;
@@ -2553,8 +2554,8 @@ output {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555;
-  background-color: #fff;
+  color: darkgray;
+  background-color: darkslategray;
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -3530,7 +3531,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: darkslategray;
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
   border: 1px solid #ccc;
@@ -3555,7 +3556,7 @@ tbody.collapse.in {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333;
+  color: white;
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
@@ -4593,7 +4594,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
-  color: #9d9d9d;
+  color: white;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
@@ -4604,7 +4605,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #9d9d9d;
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: #9d9d9d;
+  color: white;
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
@@ -4959,8 +4960,8 @@ a.badge:focus {
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 30px;
-  color: inherit;
-  background-color: #eee;
+  color: white;
+  background-color: darkslategray;
 }
 .jumbotron h1,
 .jumbotron .h1 {

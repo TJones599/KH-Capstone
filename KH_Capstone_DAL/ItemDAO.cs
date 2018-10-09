@@ -30,7 +30,10 @@ namespace KH_Capstone_DAL
 
                 using (SqlDataReader reader = sqlCMD.ExecuteReader())
                 {
-                    Mapper.MapSingleItem(reader);
+                    if(reader.Read())
+                    {
+                    item = Mapper.MapSingleItem(reader);
+                    }
                 }
             }
             return item;
@@ -69,7 +72,7 @@ namespace KH_Capstone_DAL
                 sqlCMD.Parameters.AddWithValue("ItemName", item.Name );
                 sqlCMD.Parameters.AddWithValue("Description", item.Description );
                 sqlCMD.Parameters.AddWithValue("Image", item.ImagePath );
-                sqlCMD.Parameters.AddWithValue("Purchaseable", item.Purchasable);
+                sqlCMD.Parameters.AddWithValue("Purchasable", item.Purchasable);
                 sqlCMD.Parameters.AddWithValue("Validate", item.Validated );
 
                 sqlCon.Open();

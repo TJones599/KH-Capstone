@@ -1,0 +1,29 @@
+﻿@using KH_Capstone.Models
+@model ItemPO
+
+@{
+    ViewBag.Title = "ViewItem";
+}
+
+<table class="table">
+    <tr>
+        <td colspan="2">
+            Image
+        </td>
+        <td>
+            Name: @Model.Name
+        </td>
+        <td>
+            @if (Model.Purchasable)
+            {
+                <text>Can be purchased</text>
+            }
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @Model.Description
+        </td>
+    </tr>
+</table>
+

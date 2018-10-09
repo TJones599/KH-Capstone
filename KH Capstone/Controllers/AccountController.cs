@@ -112,11 +112,10 @@ namespace KH_Capstone.Controllers
                 newUser.Role = 1;
                 _UserDAO.CreateNewUser(newUser);
 
-                Login user = new Login();
-                user.Password = form.Password;
-                user.UserName = form.UserName;
+                Session["UserName"] = newUser.UserName;
+                Session["Role"] = newUser.Role;
             }
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
     }

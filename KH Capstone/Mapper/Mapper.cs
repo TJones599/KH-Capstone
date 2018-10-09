@@ -37,6 +37,17 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
+        public static List<EnemyPO> EnemyDOListToPO(List<EnemyDO> from)
+        {
+            List<EnemyPO> enemyList = new List<EnemyPO>();
+
+            foreach(EnemyDO enemy in from)
+            {
+                enemyList.Add(EnemyDOtoPO(enemy));
+            }
+            return enemyList;
+        }
+
         public static ItemDO ItemPOtoDO(ItemPO from)
         {
             ItemDO to = new ItemDO();
@@ -48,6 +59,16 @@ namespace KH_Capstone.Mapper
             to.Purchasable = from.Purchasable;
             to.Validated = from.Validated;
 
+            return to;
+        }
+
+        public static List<ItemPO> ItemDOListToPO(List<ItemDO> from)
+        {
+            List<ItemPO> to = new List<ItemPO>();
+            foreach(ItemDO item in from)
+            {
+                to.Add(ItemDOtoPO(item));
+            }
             return to;
         }
 

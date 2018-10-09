@@ -26,14 +26,16 @@ namespace KH_Capstone_DAL
                 using (SqlCommand sqlCMD = new SqlCommand("ENEMY_PULL_SINGLE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
-
                     sqlCMD.Parameters.AddWithValue("EnemyID", id);
 
                     sqlCon.Open();
 
                     using (SqlDataReader reader = sqlCMD.ExecuteReader())
                     {
-                        enemy = Mapper.MapSingleEnemy(reader);
+                        if(reader.Read())
+                        {
+                            enemy = Mapper.MapSingleEnemy(reader);
+                        }
                     }
                 }
             }

@@ -1,0 +1,46 @@
+﻿@using KH_Capstone.Models
+@model List<ItemPO>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Item List</h2>
+
+<table class="table" style="background-color: cadetblue;">
+    <tbody>
+        @foreach (ItemPO item in Model)
+        {
+            if (item.Validated == false)
+            {
+                <tr>
+                    <td rowspan="2">
+                        image
+                    </td>
+                    <td>
+                        <text style="color:black;">Name: </text>
+                        @item.Name
+                    </td>
+                    @if ((int)Session["Role"] >= 2)
+                    {
+                        <td>
+                            @Html.ActionLink("Update", "UpdateItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-success" })
+                        </td>
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        <text style="color:black;">Description: </text>
+                        @item.Description
+                    </td>
+                    @if ((int)Session["Role"] == 3)
+                    {
+                        <td>
+                            @Html.ActionLink("Delete", "DeleteItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-danger" })
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
