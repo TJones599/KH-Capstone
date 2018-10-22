@@ -1,4 +1,5 @@
-﻿using KH_Capstone_DAL.Mappers;
+﻿using KH_Capstone_DAL.LoggerDAO;
+using KH_Capstone_DAL.Mappers;
 using KH_Capstone_DAL.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,12 +9,11 @@ namespace KH_Capstone_DAL
     public class UserDAO
     {
         private readonly string connectionString;
-        private readonly string logPath;
 
         public UserDAO(string connectionString, string logPath)
         {
             this.connectionString = connectionString;
-            this.logPath = logPath;
+            Logger.logPath = logPath;
         }
 
         public UserDO ViewByUserName(string UserName)
@@ -32,16 +32,16 @@ namespace KH_Capstone_DAL
 
                     using (SqlDataReader reader = sqlCMD.ExecuteReader())
                     {
-                        if(reader.Read())
+                        if (reader.Read())
                         {
                             user = Mapper.MapSingleUser(reader);
                         }
                     }
                 }
             }
-            catch(SqlException sqlEx)
+            catch (SqlException sqlEx)
             {
-
+                Logger.LogSqlException(sqlEx);
             }
             return user;
         }
@@ -55,15 +55,23 @@ namespace KH_Capstone_DAL
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
                 using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_SINGLE", sqlCon))
                 {
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCMD.Parameters.AddWithValue("UserID", id);
+
+                    sqlCon.Open();
+
                     using (SqlDataReader reader = sqlCMD.ExecuteReader())
                     {
-                        user = Mapper.MapSingleUser(reader);
+                        if (reader.Read())
+                        {
+                            user = Mapper.MapSingleUser(reader);
+                        }
                     }
                 }
             }
-            catch(SqlException sqlEx)
+            catch (SqlException sqlEx)
             {
-
+                Logger.LogSqlException(sqlEx);
             }
             return user;
         }
@@ -71,67 +79,134 @@ namespace KH_Capstone_DAL
         public List<UserDO> ViewAllUsers()
         {
             List<UserDO> users = new List<UserDO>();
-
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_ALL", sqlCon))
+            try
             {
-                sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
-
-                using (SqlDataReader reader = sqlCMD.ExecuteReader())
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_ALL", sqlConnection))
                 {
-                    while(reader.Read())
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    sqlConnection.Open();
+
+                    using (SqlDataReader reader = sqlCMD.ExecuteReader())
                     {
-                        users.Add(Mapper.MapSingleUser(reader));
+                        while (reader.Read())
+                        {
+                            users.Add(Mapper.MapSingleUser(reader));
+                        }
                     }
                 }
+            }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
             }
             return users;
         }
 
         public void UpdateUser(UserDO user)
         {
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("USER_UPDATE", sqlCon))
+            try
             {
-                sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_UPDATE", sqlCon))
+                {
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
-                sqlCMD.Parameters.AddWithValue("RoleID", user.UserId);
-                sqlCMD.Parameters.AddWithValue("UserName", user.UserName);
-                sqlCMD.Parameters.AddWithValue("Password", user.Password );
-                sqlCMD.Parameters.AddWithValue("Role", user.Role);
+                    sqlCMD.Parameters.AddWithValue("UserID", user.UserId);
+                    sqlCMD.Parameters.AddWithValue("UserName", user.UserName);
+                    sqlCMD.Parameters.AddWithValue("Password", user.Password);
+                    sqlCMD.Parameters.AddWithValue("Role", user.Role);
+                    sqlCMD.Parameters.AddWithValue("FirstName", user.FirstName);
+                    sqlCMD.Parameters.AddWithValue("LastName", user.LastName);
+                    sqlCMD.Parameters.AddWithValue("Banned", user.Banned);
 
-                sqlCon.Open();
-                sqlCMD.ExecuteNonQuery();
+                    sqlCon.Open();
+                    sqlCMD.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
             }
         }
 
         public void DeleteUser(int id)
         {
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("USER_DELETE", sqlCon))
+            try
             {
-                sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
-                sqlCMD.Parameters.AddWithValue("UserID", id);
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_INACTIVE", sqlCon))
+                {
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCMD.Parameters.AddWithValue("UserID", id);
 
-                sqlCon.Open();
-                sqlCMD.ExecuteNonQuery();
+                    sqlCon.Open();
+                    sqlCMD.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
             }
         }
 
         public void CreateNewUser(UserDO user)
         {
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("USER_NEW", sqlCon))
+            try
             {
-                sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
+                using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_NEW", sqlCon))
+                {
+                    sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
-                sqlCMD.Parameters.AddWithValue("UserName", user.UserName );
-                sqlCMD.Parameters.AddWithValue("Password", user.Password );
-                sqlCMD.Parameters.AddWithValue("Role", user.Role );
+                    sqlCMD.Parameters.AddWithValue("UserName", user.UserName);
+                    sqlCMD.Parameters.AddWithValue("Password", user.Password);
+                    sqlCMD.Parameters.AddWithValue("Role", user.Role);
+                    sqlCMD.Parameters.AddWithValue("FirstName", user.FirstName);
+                    sqlCMD.Parameters.AddWithValue("LastName", user.LastName);
+                    sqlCMD.Parameters.AddWithValue("Banned", user.Banned);
 
-                sqlCon.Open();
-                sqlCMD.ExecuteNonQuery();
+                    sqlCon.Open();
+                    sqlCMD.ExecuteNonQuery();
+                }
             }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
+            }
+        }
+
+        public List<RoleDO> GetRoleList()
+        {
+            List<RoleDO> Roles = new List<RoleDO>();
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                using (SqlCommand PullAllRoles = new SqlCommand("ROLES_PULL_ALL_ROLEIDS", sqlConnection))
+                {
+                    PullAllRoles.CommandType = System.Data.CommandType.StoredProcedure;
+
+
+                    sqlConnection.Open();
+
+                    using (SqlDataReader reader = PullAllRoles.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            RoleDO temp = new RoleDO();
+                            temp = Mapper.MapSingleRole(reader);
+                            Roles.Add(temp);
+                        }
+                    }
+
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
+            }
+            return Roles;
         }
     }
 }

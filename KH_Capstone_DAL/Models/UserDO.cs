@@ -15,5 +15,15 @@ namespace KH_Capstone_DAL.Models
         public string Password { get; set; }
 
         public int Role { get; set; }
+
+        public string RoleName { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public bool Banned { get; set; }
+
+        public bool Inactive { get; set; }
     }
 }

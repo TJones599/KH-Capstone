@@ -42,10 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnemyDAO.cs" />
+    <Compile Include="EnemyItemDAO.cs" />
     <Compile Include="ItemDAO.cs" />
+    <Compile Include="LoggerDAO\Logger.cs" />
     <Compile Include="Mappers\Mapper.cs" />
     <Compile Include="Models\EnemyDO.cs" />
+    <Compile Include="Models\EnemyItemDetailsDO.cs" />
     <Compile Include="Models\ItemDO.cs" />
+    <Compile Include="Models\RoleDO.cs" />
     <Compile Include="Models\UserDO.cs" />
     <Compile Include="UserDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

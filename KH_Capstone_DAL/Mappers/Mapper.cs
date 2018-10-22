@@ -26,7 +26,12 @@ namespace KH_Capstone_DAL.Mappers
             user.UserId = (int)from["UserID"];
             user.UserName = from["UserName"] as string;
             user.Password = from["Password"] as string;
+            user.RoleName = from["RoleName"] as string;
             user.Role = (int)from["Role"];
+            user.FirstName = from["FirstName"] as string;
+            user.LastName = from["LastName"] as string;
+            user.Banned = (bool)from["Banned"];
+            user.Inactive = (bool)from["Inactive"];
 
             return user;
         }
@@ -41,6 +46,26 @@ namespace KH_Capstone_DAL.Mappers
             to.ImagePath = from["Image"] as string;
             to.Purchasable = (bool)from["Purchasable"];
             to.Validated = (bool)from["Validate"];
+
+            return to;
+        }
+
+        public static EnemyItemDetailsDO MapSingleEnemyLink(SqlDataReader from)
+        {
+            EnemyItemDetailsDO to = new EnemyItemDetailsDO();
+            to.LinkID = (int)from["ID"];
+            to.EnemyID = (int)from["EnemyID"];
+            to.ItemID = (int)from["ItemID"];
+
+            return to;
+        }
+        
+        public static RoleDO MapSingleRole(SqlDataReader from)
+        {
+            RoleDO to = new RoleDO();
+
+            to.RoleID = (int)from["RoleID"];
+            to.Name = from["RoleName"] as string;
 
             return to;
         }

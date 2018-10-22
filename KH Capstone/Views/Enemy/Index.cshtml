@@ -1,45 +1,78 @@
 ﻿@using KH_Capstone.Models
 @model List<EnemyPO>
 @{
+    /**/
+
     ViewBag.Title = "Index";
 }
-
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <h2 style="color:white;">Enemy List</h2>
-<table class="table">
-    <tbody style="background-color: cadetblue; color: lightcyan;">
-        @foreach (EnemyPO enemy in Model)
-        {
-            if (enemy.Validated == true)
+@foreach (EnemyPO enemy in Model)
+{
+    <table class="table">
+        <tbody style="background-color: cadetblue; color: lightcyan;">
+            @if (enemy.Validated == true)
             {
                 <tr>
-                    <td rowspan="2">
-                        Image
+                    <td rowspan="2" width="150">
+                        <img src="@Url.Content(enemy.ImagePath)" alt="@enemy.Name" height="150" width="150" />
                     </td>
                     <td>
-                        <text style="color:black;">Name: </text><u>@Html.ActionLink(enemy.Name, "ViewEnemy", "Enemy", new { id = enemy.EnemyID }, new { @style = "color: lightcyan" })</u>
+                        <text style="color:black;">Name: </text>
+                        @Ajax.ActionLink(enemy.Name, "ViewEnemyDrops", "Enemy", new { id = enemy.EnemyID },
+                       new AjaxOptions
+                       {
+                           HttpMethod = "GET",
+                           InsertionMode = InsertionMode.Replace,
+                           UpdateTargetId = @enemy.EnemyID.ToString()
+                       },
+                       new {@style="color:white; text-decoration: underline;"}
+                       )
+
+                        @*<text style="color:black;">Name: </text><u>@Html.ActionLink(enemy.Name, "ViewEnemy", "Enemy", new { id = enemy.EnemyID }, new { @style = "color: lightcyan" })</u>*@
                     </td>
                     <td>
                         <text style="color:black;">World: </text>@enemy.Location
                     </td>
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
-                    {
-                        <td>
+                    <td style="text-align:right;">
+                        @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
+                        {
                             @Html.ActionLink("Update", "UpdateEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-success" })
-                        </td>
-                    }
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
+                        <text style="color:black;">Description: </text>
                         @enemy.Description
                     </td>
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 3)
-                    {
-                        <td>
+                    <td style="text-align:right;">
+                        @if (!(Session["RoleName"] is null) && Session["RoleName"].ToString() == "Admin")
+                        {
                             @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger" })
-                        </td>
-                    }
+                        }
+                    </td>
+                </tr>
+                <tr style="background-color:darkslategray;">
+                    <td colspan="4"></td>
                 </tr>
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+
+    <div class="row" style="width:80%; float:left; padding-left:15%">
+        <div id="@enemy.EnemyID.ToString()">
+        </div>
+    </div>
+
+}
+<div class="row">
+    <br />
+</div>
+
+<script>
+    function CloseList(id) {
+        document.getElementById(id).innerHTML = "";
+    }
+</script>

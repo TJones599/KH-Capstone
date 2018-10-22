@@ -16,10 +16,13 @@ namespace KH_Capstone.Models
         [Required]
         public string Description { get; set; }
         
+        [Required]
         public string ImagePath { get; set; }
         
         public bool Purchasable { get; set; }
 
         public bool Validated { get; set; }
+
+        public string Type { get; set; }
     }
 }

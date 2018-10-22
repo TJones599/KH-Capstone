@@ -12,16 +12,16 @@
             if (enemy.Validated == false)
             {
                 <tr>
-                    <td rowspan="2">
-                        Image
+                    <td rowspan="2" width="150px">
+                        <img src="@Url.Content(enemy.ImagePath)" alt="@enemy.Name" height="150" width="150" />
                     </td>
                     <td>
-                        <text style="color:black;">Name: </text><u>@Html.ActionLink(enemy.Name, "ViewEnemy", "Enemy", new { id = enemy.EnemyID }, new { @style = "color: lightcyan" })</u>
+                        <text style="color:black;">Name: </text><u>@enemy.Name</u>
                     </td>
                     <td>
                         <text style="color:black;">World: </text>@enemy.Location
                     </td>
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
+                    @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
                     {
                         <td>
                             @Html.ActionLink("Update", "UpdateEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-success" })
@@ -29,13 +29,19 @@
                     }
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        @enemy.Description
-                    </td>
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 3)
+                    @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Admin"))
                     {
+                        <td colspan="2">
+                            @enemy.Description
+                        </td>
                         <td>
                             @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td colspan="3">
+                            @enemy.Description
                         </td>
                     }
                 </tr>

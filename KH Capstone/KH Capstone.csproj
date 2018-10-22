@@ -151,14 +151,23 @@
     <Compile Include="Controllers\EnemyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
+    <Compile Include="Custom\Security Filter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="LoggerPL\Logger.cs" />
     <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Models\CreateEnemyVM.cs" />
+    <Compile Include="Models\EnemyUpdateVM.cs" />
+    <Compile Include="Models\EnemyDropsVM.cs" />
     <Compile Include="Models\EnemyPO.cs" />
+    <Compile Include="Models\EnemyItemIDLink.cs" />
+    <Compile Include="Models\ItemDropsVM.cs" />
     <Compile Include="Models\ItemPO.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\RolePO.cs" />
     <Compile Include="Models\UserPO.cs" />
+    <Compile Include="Models\UserUpdateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +179,41 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Enemies\Air-Pirate.png" />
+    <Content Include="Images\Enemies\Air-Soldier.png" />
+    <Content Include="Images\Enemies\Angel-Star.png" />
+    <Content Include="Images\Enemies\Aquatank.png" />
+    <Content Include="Images\Enemies\Bandit.png" />
+    <Content Include="Images\Enemies\Barrel-Spider.png" />
+    <Content Include="Images\Enemies\Battleship.png" />
+    <Content Include="Images\Enemies\Behemoth.png" />
+    <Content Include="Images\Enemies\Black-Fungus.png" />
+    <Content Include="Images\Enemies\Blue-Rhapsody.png" />
+    <Content Include="Images\Enemies\Darkball.png" />
+    <Content Include="Images\Enemies\Darkside.png" />
+    <Content Include="Images\Enemies\Defender.png" />
+    <Content Include="Images\Enemies\Fat-Bandit.png" />
+    <Content Include="Images\Enemies\heartlesss-emblem.png" />
+    <Content Include="Images\Enemies\Screwdriver.png" />
+    <Content Include="Images\Enemies\Shadow.png" />
+    <Content Include="Images\Enemies\Soldier.png" />
+    <Content Include="Images\Home\Agrabah combat.jpg" />
+    <Content Include="Images\Home\Cerberus.jpg" />
+    <Content Include="Images\Home\Deep Jungle boss.jpg" />
+    <Content Include="Images\Home\KH FM banner.jpg" />
+    <Content Include="Images\Home\maxresdefault.jpg" />
+    <Content Include="Images\Home\maxresdefault.png" />
+    <Content Include="Images\Home\Thunder Magic.jpg" />
+    <Content Include="Images\Home\Traverse Town boss trip 1.jpg" />
+    <Content Include="Images\Home\Traverse Town Shop.png" />
+    <Content Include="Images\Items\Accessory\Accessory.png" />
+    <Content Include="Images\Items\Item\Elixir.png" />
+    <Content Include="Images\Items\Item\Ether.png" />
+    <Content Include="Images\Items\Item\Hi-Potion.png" />
+    <Content Include="Images\Items\Item\Item.png" />
+    <Content Include="Images\Items\Item\Mega-Ether.png" />
+    <Content Include="Images\Items\Item\Mega-Potion.png" />
+    <Content Include="Images\Items\Item\Potion.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -181,6 +225,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -197,13 +243,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Enemy\Index.cshtml" />
-    <Content Include="Views\Enemy\ViewEnemy.cshtml" />
     <Content Include="Views\Enemy\NewEnemy.cshtml" />
     <Content Include="Views\Enemy\UpdateEnemy.cshtml" />
     <Content Include="Views\Enemy\ViewUnvalidatedEnemy.cshtml" />
@@ -212,6 +255,13 @@
     <Content Include="Views\Item\ViewUnvalidatedItems.cshtml" />
     <Content Include="Views\Item\CreateItem.cshtml" />
     <Content Include="Views\Item\UpdateItem.cshtml" />
+    <Content Include="Views\Account\AccountView.cshtml" />
+    <Content Include="Views\Account\UpdateUser.cshtml" />
+    <Content Include="Views\Enemy\ViewEnemy.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Enemy\_ViewEnemyDrops.cshtml" />
+    <Content Include="Views\Item\_ViewDropsFrom.cshtml" />
+    <Content Include="Views\Account\UpdatePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

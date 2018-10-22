@@ -1,0 +1,55 @@
+﻿@using KH_Capstone.Models
+@model EnemyDropsVM
+
+<div>
+    <div class="row" style="padding-left:0;">
+        @foreach (ItemPO item in Model.Items)
+        {
+            <div class="col-md-5" style="background-color:cadetblue;">
+                <div class="col-md-5" style="padding-left:0">
+                    <img src="@Url.Content(item.ImagePath)" alt="@item.Name" height="75" width="75" />
+                </div>
+                <div class="col-md-7">
+                    <div class="row" style="margin-top:15px">
+                        
+                            <text style="color:black;">Name: </text>
+                            @item.Name
+                            @*@Html.ActionLink(item.Name, "ViewItem", "Item", new { id = item.ItemID }, new { style = "color:lightcyan; text-decoration:underline;" })*@
+                        
+                        <div class="row" style="margin-top:15px">
+                            <text>Shops</text>
+                            @if (item.Purchasable)
+                            {
+                                <span style="color:black;"><b> sell </b></span>
+                            }
+                            else
+                            {
+                                <span style="color:red;"><b> do not sell </b></span>
+                            }
+                            <text>this item</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="margin-top:45px">
+                        <text style="color:black;">Description: </text>
+                        @item.Description
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+
+            </div>
+        }
+        @if (Model.Items.Count == 0)
+        {
+            <div class="alert alert-danger">
+                <text style="color:black;">No item drops currently set</text>
+            </div>
+        }
+    </div>
+    <br />
+    <button onclick="CloseList(@Model.enemy.EnemyID)" style="color:white; background-color:cadetblue; margin-bottom:15px;">Close</button>
+    <br />
+</div>

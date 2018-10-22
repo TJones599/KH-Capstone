@@ -1,0 +1,45 @@
+﻿@using KH_Capstone.Models
+@model ItemDropsVM
+
+<div>
+    <div class="row" style="padding-left:0;">
+        @foreach (EnemyPO enemy in Model.enemies)
+        {
+            <div class="row" style="background-color:cadetblue">
+                <div class="col-md-3" style="padding-left:0;">
+                    <img src="@Url.Content(enemy.ImagePath)" alt="@enemy.Name" height="150" width="150" />
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-4" style="margin-top:15px">
+                            <text style="color:black">
+                                Name:
+                            </text>
+                            @enemy.Name
+                        </div>
+                        <div class="col-md-4" style="margin-top:15px">
+                            <text style="color:black;">
+                                Location:
+                            </text>
+                            @enemy.Location
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8" style="margin-top:15px">
+                            <text style="color:black;">Description: </text>
+                            @enemy.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+        @if(Model.enemies.Count == 0)
+        {
+            <div class="alert alert-danger">
+                <text style="color:black;">No enemies drop this item!</text>
+            </div>
+        }
+    </div>
+    <button onclick="CloseList(@Model.item.ItemID.)" style="color:white; background-color:cadetblue; margin-bottom:15px;">Close</button>
+</div>

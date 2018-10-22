@@ -16,7 +16,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Kingdom Hearts 1.5 FinalMix", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Kingdom Hearts", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -24,57 +24,91 @@
                         @Html.ActionLink("Home", "Index", "Home")
                     </li>
                     <li>
-                        @Html.ActionLink("Enemies", "Index", "Enemy")
-                    </li>
-                    <li>
-                        @Html.ActionLink("Items", "Index", "Item")
-                    </li>
-                    @if (!(Session["Role"] is null) && (int)Session["Role"] >= 1)
-                    {
-                        <li>
-                            @Html.ActionLink("Create Item", "CreateItem", "Item")
-                        </li>
-                        <li>
-                            @Html.ActionLink("Create Enemy", "NewEnemy", "Enemy")
-                        </li>
-                    }
-                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
+                                Enemies
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Enemies", "Index", "Enemy")
+                                </li>
+                                <li>
 
-                        @if (!(Session["Role"] is null) && (int)Session["Role"] >= 2)
+                                    @if (!(Session["RoleName"] is null))
+                                    {
+                                        @Html.ActionLink("Create Enemy", "NewEnemy", "Enemy")
+                                    }
+                                </li>
+                                <li>
+                                    @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
+                                    {
+                                        @Html.ActionLink("Validate Enemies", "ViewUnvalidatedEnemy", "Enemy")
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
+                                Items
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("Items", "Index", "Item")
+                                </li>
+                                <li>
+
+                                    @if (!(Session["RoleName"] is null))
+                                    {
+                                        @Html.ActionLink("Create Item", "CreateItem", "Item")
+                                    }
+                                </li>
+                                <li>
+                                    @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
+                                    {
+                                        @Html.ActionLink("Validate Items", "ViewUnvalidatedItems", "Item")
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        @if (!(Session["RoleName"] is null) && (int)Session["Role"] > 1)
                         {
                             <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
-                                    @if((int)Session["Role"]==3)
-                                    {<text> Admin </text>}
+                                    @if (Session["RoleName"].ToString() == "Admin")
+                                    {
+                                        <text> Admin </text>
+                                    }
                                     else
-                                    {<text> Mod </text>}
+                                    {
+                                        <text> Mod </text>
+                                    }
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        @Html.ActionLink("Validate Enemies", "ViewUnvalidatedEnemy", "Enemy")
+                                        @Html.ActionLink("View Users", "Index", "Account")
                                     </li>
-                                    <li>
-                                        @Html.ActionLink("Validate Items", "ViewUnvalidatedItems", "Item")
-                                    </li>
-
-                                    @if (!(Session["Role"] is null) && (int)Session["Role"] == 3)
-                                    {
-                                        <li>
-                                            @Html.ActionLink("Delete User", "RemoveUser", "Account")
-                                        </li>
-                                    }
                                 </ul>
                             </div>
                         }
                     </li>
                 </ul>
-
                 <ul class="nav navbar-nav navbar-right">
                     @if (!(Session["UserName"] is null))
                     {
                         <li>
-                            @Html.ActionLink(Session["UserName"].ToString(), "", "")
+                            @Html.ActionLink(Session["UserName"].ToString(), "AccountView", "Account")
+                        </li>
+                        <li>
+                            <div style="margin-top:15px">
+                                <text class="text-muted"><b>@Session["RoleName"].ToString()</b></text>
+                            </div>
                         </li>
                         <li>
                             @Html.ActionLink("Logout", "Logout", "Account")
@@ -96,8 +130,11 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+    </div>
+    <div>
+        <br />
         <footer style="color:white;">
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Kingdom Hearts 1.5 Final Mix</p>
         </footer>
     </div>
 

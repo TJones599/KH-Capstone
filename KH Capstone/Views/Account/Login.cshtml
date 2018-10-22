@@ -8,16 +8,19 @@
 
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
-    @Html.LabelFor(model => Model.UserName)
-    <div class="form-group">
-        @Html.TextBoxFor(model => Model.UserName, new {@class = "form-control"})
-        @Html.ValidationMessageFor(model => Model.UserName, "", new { @class = "text-danger" })
+    <div class="row">
+        @Html.LabelFor(model => Model.UserName, new { @class = "col-md-2 control-label col-sm-2" })
+        <div class="form-group">
+            @Html.TextBoxFor(model => Model.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => Model.UserName, "", new { @class = "text-danger" })
+        </div>
     </div>
-
-    @Html.LabelFor(model => Model.Password)
-    <div class="form-group">
-        @Html.PasswordFor(model => Model.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Password, "", new { @class = "text-danger" })
+    <div class="row">
+        @Html.LabelFor(model => Model.Password, new { @class = "col-md-2 control-label col-sm-2" })
+        <div class="form-group">
+            @Html.PasswordFor(model => Model.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => Model.Password, "", new { @class = "text-danger" })
+        </div>
     </div>
 
     <input type="submit" value="Login" class="btn btn-success" />

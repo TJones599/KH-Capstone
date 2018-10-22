@@ -1,25 +1,35 @@
 ﻿@using KH_Capstone.Models
-@model EnemyPO
+@model CreateEnemyVM
 @{
     ViewBag.Title = "NewEnemy";
 }
 
 <h2>New enemy information</h2>
 
-@using (Html.BeginForm("NewEnemy", "Enemy", FormMethod.Post))
+@using (Html.BeginForm("NewEnemy", "Enemy", FormMethod.Post, new{enctype="multipart/form-data"))
 {
-    @Html.LabelFor(model => Model.Name)
+    @Html.HiddenFor(model => Model.Item1)
+    @Html.HiddenFor(model => Model.Item2)
+    @Html.HiddenFor(model => Model.Enemy.ImagePath)
+
+    @Html.LabelFor(model => Model.Enemy.Name)
     <div>
-        @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
+        @Html.TextBoxFor(model => Model.Enemy.Name, new { @class = "form-control" })
     </div>
-    @Html.LabelFor(model => Model.Location)
+    @Html.LabelFor(model => Model.Enemy.Location)
     <div>
-        @Html.TextBoxFor(model => Model.Location, new { @class = "form-control" })
+        @Html.TextBoxFor(model => Model.Enemy.Location, new { @class = "form-control" })
     </div>
-    @Html.LabelFor(model => Model.Description)
+    @Html.LabelFor(model => Model.Enemy.Description)
     <div>
-        @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
+        @Html.TextBoxFor(model => Model.Enemy.Description, new { @class = "form-control" })
     </div>
+    <br />
+
+    <div>
+        @Html.TextBoxFor(model => Model.File, new { type = "file" })
+    </div>
+
     <br />
     <input type="submit" value="Create" class="btn btn-success"/>
 }

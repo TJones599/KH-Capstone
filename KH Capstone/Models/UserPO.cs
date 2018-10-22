@@ -12,10 +12,23 @@ namespace KH_Capstone.Models
 
         [Required]
         public string UserName { get; set; }
-
-        [Required]
+        
         public string Password { get; set; }
 
+        public string NewPassword { get; set; }
+
+        public string PasswordConfirmation { get; set; }
+
         public int Role { get; set; }
+
+        public string RoleName { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public bool Banned { get; set; }
+
+        public bool Inactive { get; set; }
     }
 }

@@ -3582,7 +3582,7 @@ tbody.collapse.in {
 .dropdown-menu > .disabled > a:focus {
   text-decoration: none;
   cursor: not-allowed;
-  background-color: transparent;
+  background-color: cadetblue;
   background-image: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }

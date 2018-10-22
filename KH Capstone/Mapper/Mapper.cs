@@ -93,7 +93,12 @@ namespace KH_Capstone.Mapper
             to.UserId = from.UserID;
             to.UserName = from.UserName;
             to.Password = from.Password;
+            to.RoleName = from.RoleName;
             to.Role = from.Role;
+            to.FirstName = from.FirstName;
+            to.LastName = from.LastName;
+            to.Banned = from.Banned;
+            to.Inactive = from.Inactive;
 
             return to;
         }
@@ -105,7 +110,12 @@ namespace KH_Capstone.Mapper
             to.UserID = from.UserId;
             to.UserName = from.UserName;
             to.Password = from.Password;
+            to.RoleName = from.RoleName;
             to.Role = from.Role;
+            to.FirstName = from.FirstName;
+            to.LastName = from.LastName;
+            to.Banned = from.Banned;
+            to.Inactive = from.Inactive;
 
             return to;
         }
@@ -121,8 +131,98 @@ namespace KH_Capstone.Mapper
                 temp.UserID = user.UserId;
                 temp.UserName = user.UserName;
                 temp.Password = null;
+                temp.RoleName = user.RoleName;
                 temp.Role = user.Role;
+                temp.FirstName = user.FirstName;
+                temp.LastName = user.LastName;
+                temp.Banned = user.Banned;
+                temp.Inactive = user.Inactive;
+
+                to.Add(temp);
             }
+
+            return to;
+        }
+
+        public static EnemyItemIDLink DetailsDOtoPO(EnemyItemDetailsDO from)
+        {
+            EnemyItemIDLink to = new EnemyItemIDLink();
+
+            to.LinkID = from.LinkID;
+            to.EnemyID = from.EnemyID;
+            to.ItemID = from.ItemID;
+
+            return to;
+        }
+
+        public static List<EnemyItemIDLink> DetailsDOtoPO(List<EnemyItemDetailsDO> from)
+        {
+            List<EnemyItemIDLink> to = new List<EnemyItemIDLink>();
+            foreach (EnemyItemDetailsDO enemy in from)
+            {
+                EnemyItemIDLink temp = new EnemyItemIDLink();
+                temp.LinkID = enemy.LinkID;
+                temp.EnemyID = enemy.EnemyID;
+                temp.ItemID = enemy.ItemID;
+                to.Add(temp);
+            }
+
+            return to;
+        }
+
+        public static EnemyItemDetailsDO DetailsPOtoDO(EnemyItemIDLink from)
+        {
+            EnemyItemDetailsDO to = new EnemyItemDetailsDO();
+
+            to.LinkID = from.LinkID;
+            to.EnemyID = from.EnemyID;
+            to.ItemID = from.ItemID;
+
+            return to;
+        }
+
+        public static List<EnemyItemDetailsDO> DetailsPOtoDO(List<EnemyItemIDLink> from)
+        {
+            List<EnemyItemDetailsDO> to = new List<EnemyItemDetailsDO>();
+            foreach (EnemyItemIDLink enemy in from)
+            {
+                EnemyItemDetailsDO temp = new EnemyItemDetailsDO();
+                temp.LinkID = enemy.LinkID;
+                temp.EnemyID = enemy.EnemyID;
+                temp.ItemID = enemy.ItemID;
+                to.Add(temp);
+            }
+
+            return to;
+        }
+
+        public static List<RolePO> RoleDOListToPOList(List<RoleDO> from)
+        {
+            List<RolePO> to = new List<RolePO>();
+
+            foreach(RoleDO role in from)
+            {
+                RolePO temp = new RolePO();
+
+                temp.RoleID = role.RoleID;
+                temp.RoleName = role.Name;
+
+                to.Add(temp);
+            }
+
+            return to;
+        }
+
+        public static EnemyPO MapEnemyUpdateVMtoEnemyPO(EnemyUpdateVM form)
+        {
+            EnemyPO to = new EnemyPO();
+
+            to.EnemyID = form.Enemy.EnemyID;
+            to.Name = form.Enemy.Name;
+            to.Location = form.Enemy.Location;
+            to.Description = form.Enemy.Description;
+            to.ImagePath = form.Enemy.ImagePath;
+            to.Validated = form.Enemy.Validated;
 
             return to;
         }

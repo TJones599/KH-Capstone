@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH Capstone", "KH Capstone\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH_Capstone_DAL", "KH_Capstone_DAL\KH_Capstone_DAL.csproj", "{FEEC39EE-87B3-46E1-9382-F15567E8C807}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KH_Capstone_BLL", "KH_Capstone_BLL\KH_Capstone_BLL.csproj", "{09034DD5-E74E-4302-B9A6-B1453F89111B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FEEC39EE-87B3-46E1-9382-F15567E8C807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEEC39EE-87B3-46E1-9382-F15567E8C807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEEC39EE-87B3-46E1-9382-F15567E8C807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09034DD5-E74E-4302-B9A6-B1453F89111B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09034DD5-E74E-4302-B9A6-B1453F89111B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09034DD5-E74E-4302-B9A6-B1453F89111B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09034DD5-E74E-4302-B9A6-B1453F89111B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

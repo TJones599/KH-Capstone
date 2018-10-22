@@ -13,14 +13,14 @@
             if (item.Validated == false)
             {
                 <tr>
-                    <td rowspan="2">
-                        image
+                    <td rowspan="2" style="width:150px";>
+                        <img src="@Url.Content(item.ImagePath)" alt="@item.Name" height="150" width="150" />
                     </td>
                     <td>
                         <text style="color:black;">Name: </text>
                         @item.Name
                     </td>
-                    @if ((int)Session["Role"] >= 2)
+                    @if (Session["RoleName"].ToString() == "Mod" ||Session["RoleName"].ToString() == "Admin")
                     {
                         <td>
                             @Html.ActionLink("Update", "UpdateItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-success" })
@@ -32,7 +32,7 @@
                         <text style="color:black;">Description: </text>
                         @item.Description
                     </td>
-                    @if ((int)Session["Role"] == 3)
+                    @if (Session["RoleName"].ToString() == "Admin")
                     {
                         <td>
                             @Html.ActionLink("Delete", "DeleteItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-danger" })

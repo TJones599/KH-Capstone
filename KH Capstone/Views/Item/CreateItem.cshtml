@@ -11,15 +11,25 @@
     @Html.LabelFor(model => Model.Name)
     <div>
         @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Name, "", new { @style = "color:red;" })
     </div>
     @Html.LabelFor(model => Model.Description)
     <div>
         @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Description, "", new { @style = "color:red;" })
+    </div>
+    <div style="margin-top:5px; margin-bottom:5px;">
+        <text><b>Item Type</b></text>
+    </div>
+    <div>
+        <select class="form-control" id="ImagePath" name="ImagePath">
+            <option>Item</option>
+            <option>Accessory</option>
+        </select>
     </div>
     @Html.LabelFor(model => Model.Purchasable)
     <div>
-        <text style="color:black;">True/False</text>
-        @Html.TextBoxFor(model => Model.Purchasable, new { @class = "form-control" })
+        @Html.CheckBoxFor(model => Model.Purchasable, new { @style = "height: 27px; width: 27px;" })
     </div>
     <br />
     <input type="submit" value="Create" class="btn btn-success" />

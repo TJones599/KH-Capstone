@@ -1,0 +1,60 @@
+﻿@using KH_Capstone.Models
+@model UserUpdateVM
+@{
+    /**/
+
+    ViewBag.Title = "UpdateUser";
+}
+
+<h2>@Model.User.UserName</h2>
+
+@using (Html.BeginForm("UpdateUser", "Account", FormMethod.Post))
+{
+    @Html.HiddenFor(model => Model.User.UserName)
+    @Html.HiddenFor(model => Model.User.Password)
+    @*@Html.HiddenFor(model => Model.User.Role)*@
+    @Html.HiddenFor(model => Model.User.RoleName)
+    @Html.HiddenFor(model => Model.User.UserID)
+
+
+    @Html.LabelFor(model => Model.User.FirstName, new { @class = "col-md-4 col-sm-4 control-label" })
+    <div>
+        @Html.TextBoxFor(model => Model.User.FirstName, new { @class = "form-control" })
+    </div>
+    <br />
+
+    @Html.LabelFor(model => Model.User.LastName, new { @class = "col-md-4 col-sm-4 control-label" })
+    <div>
+        @Html.TextBoxFor(model => Model.User.LastName, new { @class = "form-control" })
+    </div>
+    <br />
+
+    if ((int)Session["Role"] > Model.User.Role)
+    {
+        foreach (RolePO role in Model.Roles)
+        {
+            if ((int)Session["Role"] >= role.RoleID)
+            {
+                <label>@role.RoleName</label>
+                @Html.RadioButtonFor(model => Model.User.Role, role.RoleID)
+            }
+        }
+
+        <br />
+    }
+    else
+    {
+        @Html.HiddenFor(model => Model.User.Role)
+    }
+
+    if (Session["RoleName"].ToString() == "Admin")
+    {
+        @Html.LabelFor(model => Model.User.Banned)
+        <div>
+            @Html.CheckBoxFor(model => Model.User.Banned, new { style = "height:27px; width:27px;" })
+        </div>
+    }
+    <br />
+    <input type="submit" value="Update" class="btn btn-success" />
+}
+

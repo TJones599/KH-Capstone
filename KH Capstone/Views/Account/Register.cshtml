@@ -6,22 +6,51 @@
 
 <h2>New User Information</h2>
 
-@using(Html.BeginForm("Register", "Account", FormMethod.Post))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
-    @Html.LabelFor(model => Model.UserName)
-    <div>
-        @Html.TextBoxFor(model => Model.UserName, new { @class = "form-control" });
-    
+    <text>Optional</text>
+    <div class="row">
+        @Html.LabelFor(model => Model.FirstName, new { @class = "col-md-4 control-label col-sm-4" })
+        <div>
+            @Html.TextBoxFor(model => Model.FirstName, new { @class = "form-control" })
+        </div>
     </div>
-    
-    @Html.LabelFor(model => Model.Password)
-    <div>
-        @Html.PasswordFor(model => Model.Password, new { @class = "form-control" });
-    
+
+    <text>Optional</text>
+    <div class="row">
+        @Html.LabelFor(model => Model.LastName, new { @class = "col-md-4 control-label col-sm-4" })
+        <div>
+            @Html.TextBoxFor(model => Model.LastName, new { @class = "form-control" })
+        </div>
     </div>
-    
-    <input type="submit" value="Create Profile" class="btn btn-success"/>
-    
+    <br />
+
+    <div class="row">
+        @Html.LabelFor(model => Model.UserName, new { @class = "col-md-4 control-label col-sm-4" })
+        <div>
+            @Html.TextBoxFor(model => Model.UserName, new { @class = "form-control" })
+
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        @Html.LabelFor(model => Model.NewPassword, new { @class = "col-md-4 control-label col-sm-4" })
+        <div>
+            @Html.PasswordFor(model => Model.NewPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+
+    <div class="row">
+        @Html.LabelFor(model => Model.PasswordConfirmation, new { @class = "col-md-4 control-label col-sm-4" })
+        <div>
+            @Html.PasswordFor(model => Model.PasswordConfirmation, new { @class = "form-control" })
+        </div>
+    </div>
+    <br />
+
+    <input type="submit" value="Create Profile" class="btn btn-success" />
 }
 
 
