@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "GraphData";
+}
+<div class="row">
+    <div class="col-xs-push-1 col-xs-8">
+        <h2>Item drop stats</h2>
+    </div>
+</div>
+<script src="~/Scripts/Chart.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<div class="row">
+    <div class="col-md-8 col-md-push-2" id="dropChart">
+        <canvas id="itemDropChart"></canvas>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    @*<div class="col-md-8 col-md-push-2" id="testDropChart">
+            <canvas id="testFunction"></canvas>
+        </div>*@
+</div>
+
+<script>
+    //CreateChart('/Home/GetData','bar', '#testFunction')
+
+    //function CreateChart(dataUrl, onSuccess, targetID) {
+
+    //    $.ajax({
+    //        type: "Post",
+    //        url: dataUrl,
+    //        dataType: "json",
+    //        success: function(dataResponse){
+    //            if (onSuccess == "bar")
+    //            {
+    //                CreateBarChart(dataResponse, targetID)
+    //            }
+    //            else if (onSuccess == "line")
+    //            {
+    //                CreateLineChart(dataResponse, targetID)
+    //            }
+    //        }
+    //    });
+    //}
+
+    //function CreateBarChart(dataResponse, targetID) {
+
+    //    var chartLabels = dataResponse["X"];
+    //    var chartDatasets1 = dataResponse["Y"];
+    //    var dataT = {
+    //        labels: chartLabels,
+    //        datasets: [{
+    //            label: "Number of enemies that drop an item",
+    //            data: chartDatasets1,
+    //            backgroundColor: ["green", "green", "green", "green", "green", "green", "green", "green", "green",
+    //                "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green"],
+    //            borderColor: ["black", "", "", "", "", "", "", "", "",
+    //                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    //            borderWidth: 1
+    //        }]
+    //    };
+    //    var ctx = $(targetID);
+    //    var dropChart = new Chart(ctx, {
+    //        type: 'bar',
+    //        data: dataT,
+    //        options:
+    //        {
+    //            responseive: true,
+    //            title: { display: true, text: 'Item Drop Frequency' },
+    //            scales: {
+    //                yAxes: [{
+    //                    ticks: {
+    //                        beginAtZero: true
+    //                    }
+    //                }]
+    //            }
+    //        }
+    //    })
+    //}
+
+    
+    $.ajax({
+        type: "Post",
+        url: "/Home/GetData",
+        dataType: "json",
+        success: function (dataResponse) {
+
+            var chartLabels = dataResponse["X"];
+            var chartDatasets1 = dataResponse["Y"];
+            var dataT = {
+                labels: chartLabels,
+                datasets: [{
+                    label: "Number of enemies that drop an item",
+                    data: chartDatasets1,
+                    backgroundColor: ["green"],
+                    borderColor: ["black"],
+                    borderWidth: 1
+                }]
+            };
+            var ctx = $("#itemDropChart");
+            var dropChart = new Chart(ctx, {
+                type: 'bar',
+                data: dataT,
+                options:
+                {
+                    responseive: true,
+                    title: { display: true, text: 'Item Drop Frequency' },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            })
+        }
+    });
+</script>

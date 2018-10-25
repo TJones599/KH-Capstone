@@ -1,6 +1,7 @@
 ﻿using KH_Capstone_DAL.LoggerDAO;
 using KH_Capstone_DAL.Mappers;
 using KH_Capstone_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -41,6 +42,14 @@ namespace KH_Capstone_DAL
                 catch (SqlException sqlEx)
                 {
                     Logger.LogSqlException(sqlEx);
+                    sqlEx.Data["Logged"] = true;
+                    throw sqlEx;
+                }
+                catch(Exception ex)
+                {
+                    Logger.LogException(ex);
+                    ex.Data["Logged"] = true;
+                    throw ex;
                 }
             }
             return item;
@@ -70,6 +79,14 @@ namespace KH_Capstone_DAL
                 catch (SqlException sqlEx)
                 {
                     Logger.LogSqlException(sqlEx);
+                    sqlEx.Data["Logged"] = true;
+                    throw sqlEx;
+                }
+                catch(Exception ex)
+                {
+                    Logger.LogException(ex);
+                    ex.Data["Logged"] = true;
+                    throw ex;
                 }
             }
             return items;
@@ -99,6 +116,8 @@ namespace KH_Capstone_DAL
             catch (SqlException sqlEx)
             {
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
 
@@ -119,6 +138,8 @@ namespace KH_Capstone_DAL
             catch (SqlException sqlEx)
             {
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
 
@@ -145,6 +166,8 @@ namespace KH_Capstone_DAL
             catch (SqlException sqlEx)
             {
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
     }

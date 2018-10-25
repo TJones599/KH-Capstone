@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Web.Mvc;
 using KH_Capstone.Custom;
+using System;
 
 namespace KH_Capstone.Controllers
 {
@@ -31,7 +32,7 @@ namespace KH_Capstone.Controllers
         /// </summary>
         /// <returns>VIew</returns>
         [HttpGet]
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult Index()
         {
             ActionResult response;
@@ -48,7 +49,15 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogSqlException(sqlEx);
                 }
-                response = View();
+                response = RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Home");
             }
             return response;
         }
@@ -58,7 +67,7 @@ namespace KH_Capstone.Controllers
         /// </summary>
         /// <returns>View</returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult AccountView()
         {
             UserPO userInfo = new UserPO();
@@ -75,6 +84,13 @@ namespace KH_Capstone.Controllers
                     Logger.LogSqlException(sqlEx);
                 }
             }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
             return View(userInfo);
         }
 
@@ -85,10 +101,10 @@ namespace KH_Capstone.Controllers
         /// <param name="id">UserID</param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult UpdateUser(int id)
         {
-            ActionResult response = new ViewResult();
+            ActionResult response;
 
             //creating a user view model including a UserPO, and a list of Roles
             UserUpdateVM user = new UserUpdateVM();
@@ -108,7 +124,13 @@ namespace KH_Capstone.Controllers
                     Logger.LogSqlException(sqlEx);
                 }
             }
-
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
 
             //Prevents users from altering someone elses information, unless they are a higher role than the user
             //being updated
@@ -131,9 +153,10 @@ namespace KH_Capstone.Controllers
         /// <param name="form"></param>
         /// <returns></returns>
         [HttpPost]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult UpdateUser(UserUpdateVM form)
         {
+            ActionResult response;
             //tests to see if a new password has been entered and if it is the same as the password confirmmation
             //if valid, updates password to the new password
             if (form.User.NewPassword != null && (form.User.PasswordConfirmation == form.User.NewPassword))
@@ -150,6 +173,7 @@ namespace KH_Capstone.Controllers
             {
                 form.User.LastName = "";
             }
+
             if (ModelState.IsValid)
             {
                 //try to connect to the server, and update users information
@@ -166,18 +190,32 @@ namespace KH_Capstone.Controllers
                         Logger.LogSqlException(sqlEx);
                     }
                 }
+                catch (Exception ex)
+                {
+                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                    {
+                        Logger.LogException(ex);
+                    }
+                }
 
-            }
-            //redirects based on if the user is updating their own account, or someone elses.
-            //redirects mods and admins to the View all users page if they are updating someone elses account information
-            if (Session["UserName"].ToString() != form.User.UserName)
-            {
-                return RedirectToAction("Index", "Account");
+                //redirects based on if the user is updating their own account, or someone elses.
+                //redirects mods and admins to the View all users page if they are updating someone elses account information
+                if (Session["UserName"].ToString() != form.User.UserName)
+                {
+                    response = RedirectToAction("Index", "Account");
+                }
+                else
+                {
+                    response = RedirectToAction("AccountView", "Account");
+                }
             }
             else
             {
-                return RedirectToAction("AccountView", "Account");
+                ModelState.AddModelError("", "Missing information, please enter all fields.");
+                response = View(form);
             }
+
+            return response;
         }
 
         /// <summary>
@@ -186,7 +224,7 @@ namespace KH_Capstone.Controllers
         /// <param name="id">UserID</param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult DeleteUser(int id)
         {
             ActionResult response = new ViewResult();
@@ -208,6 +246,13 @@ namespace KH_Capstone.Controllers
                 if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
                 {
                     Logger.LogSqlException(sqlEx);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
                 }
             }
 
@@ -244,23 +289,23 @@ namespace KH_Capstone.Controllers
         public ActionResult Login(Login form)
         {
             ActionResult response;
-            //try to connect to the db and aquire user information, based on username entered
-            try
+            //checks to see if username and password were properly filled out
+            if (ModelState.IsValid)
             {
-                //checks to see if username and password were properly filled out
-                if (ModelState.IsValid)
+                //try to connect to the db and aquire user information, based on username entered
+                try
                 {
                     UserPO user = Mapper.Mapper.UserDOtoPO(_UserDAO.ViewByUserName(form.UserName));
                     //if user marked banned or inactive, returns view, passing back the form and error message
-                    if (!user.Banned && !user.Inactive)
+                    //if user id = 0, user does not exist. returns to view, passing back the form and error message
+                    if (user.UserID != 0)
                     {
-                        //if user id = 0, user does not exist. returns to view, passing back the form and error message
-                        if (user.UserID != 0)
+                        //tests if users stored password matches the one entered. if false, returns to view passing back the form and error message
+                        if (form.Password.Equals(user.Password))
                         {
-                            //tests if users stored password matches the one entered. if false, returns to view passing back the form and error message
-                            if (form.Password.Equals(user.Password))
-                            {
 
+                            if (!user.Banned && !user.Inactive)
+                            {
                                 //setting all Session information required.
                                 Session["UserName"] = user.UserName;
                                 Session["Role"] = user.Role;
@@ -274,39 +319,47 @@ namespace KH_Capstone.Controllers
                             }
                             else
                             {
-                                //providing an error message if username or password is incorrect and returning to view
-                                ModelState.AddModelError("Password", "Username or password was incorrect");
+                                //Provides an error message, informing the user the account they attempted to access is banned
+                                string errorMessage = "User: " + user.UserName + " has been banned, or marked inactive!";
+                                ModelState.AddModelError("Password", errorMessage);
                                 response = View(form);
                             }
                         }
                         else
                         {
                             //providing an error message if username or password is incorrect and returning to view
-                            ModelState.AddModelError("Password", "Username or Password was incorrect");
+                            ModelState.AddModelError("Password", "Username or password was incorrect");
                             response = View(form);
                         }
                     }
                     else
                     {
-                        //Provides an error message, informing the user the account they attempted to access is banned
-                        string errorMessage = "User: " + user.UserName + " has been banned!";
-                        ModelState.AddModelError("Password", errorMessage);
+                        //providing an error message if username or password is incorrect and returning to view
+                        ModelState.AddModelError("Password", "Username or Password was incorrect");
                         response = View(form);
                     }
                 }
-                else
+                //catch and log sqlExceptions encountered
+                catch (SqlException sqlEx)
                 {
-                    //returning to view if modelstate invalid
+                    if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
+                    {
+                        Logger.LogSqlException(sqlEx);
+                    }
+                    response = View(form);
+                }
+                catch (Exception ex)
+                {
+                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                    {
+                        Logger.LogException(ex);
+                    }
                     response = View(form);
                 }
             }
-            //catch and log sqlExceptions encountered
-            catch (SqlException sqlEx)
+            else
             {
-                if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
-                {
-                    Logger.LogSqlException(sqlEx);
-                }
+                //returning to view if modelstate invalid
                 response = View(form);
             }
             return response;
@@ -317,7 +370,7 @@ namespace KH_Capstone.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult Logout()
         {
             Session.Abandon();
@@ -342,12 +395,12 @@ namespace KH_Capstone.Controllers
         [HttpPost]
         public ActionResult Register(UserPO form)
         {
-            ActionResult response = new ViewResult();
-            //try to connect to the server and create a new user
-            try
+            ActionResult response;
+            //tests to see if form was fully filled out
+            if (ModelState.IsValid)
             {
-                //tests to see if form was fully filled out
-                if (ModelState.IsValid)
+                //try to connect to the server and create a new user
+                try
                 {
                     //if newpassword and passwordConfirmation match, set password = newpassword. otherwise return to view, passing back 
                     //the entered form and an error message.
@@ -393,14 +446,28 @@ namespace KH_Capstone.Controllers
                         response = View(form);
                     }
                 }
-            }
-            //Catch and log any sqlExceptions encountered during DB call
-            catch (SqlException sqlEx)
-            {
-                if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
+                //Catch and log any sqlExceptions encountered during DB call
+                catch (SqlException sqlEx)
                 {
-                    Logger.LogSqlException(sqlEx);
+                    if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
+                    {
+                        Logger.LogSqlException(sqlEx);
+                    }
+                    response = RedirectToAction("Index", "Home");
                 }
+                catch (Exception ex)
+                {
+                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                    {
+                        Logger.LogException(ex);
+                    }
+                    response = RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Missing information, please fill out all fields.");
+                response = View(form);
             }
 
             return response;
@@ -420,18 +487,22 @@ namespace KH_Capstone.Controllers
 
                 if (sqlEx.Data.Contains("Logged"))
                 {
-                    if ((bool)sqlEx.Data["Logged"]==false)
+                    if ((bool)sqlEx.Data["Logged"] == false)
                     {
-                        Logger.LogSqlException(sqlEx); 
-                    } 
+                        Logger.LogSqlException(sqlEx);
+                    }
                 }
-                else
-                {
-                    Logger.LogSqlException(sqlEx);
-                }
-                    response = RedirectToAction("Index", "Home");
+                response = RedirectToAction("Index", "Home");
             }
-            
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Home");
+            }
+
             return response;
         }
 
@@ -439,7 +510,7 @@ namespace KH_Capstone.Controllers
         public ActionResult UpdatePassword(UserPO form)
         {
             ActionResult response = new ViewResult();
-            if(form.NewPassword == form.PasswordConfirmation)
+            if (form.NewPassword == form.PasswordConfirmation)
             {
                 form.Password = form.NewPassword;
             }
@@ -453,20 +524,23 @@ namespace KH_Capstone.Controllers
             }
             catch (SqlException sqlEx)
             {
-                if(sqlEx.Data.Contains("Logged"))
+                if (sqlEx.Data.Contains("Logged"))
                 {
-                    if((bool)sqlEx.Data["Logged"]==false)
+                    if ((bool)sqlEx.Data["Logged"] == false)
                     {
                         Logger.LogSqlException(sqlEx);
                     }
                 }
-                else
+                response = View(form);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
                 {
-                    Logger.LogSqlException(sqlEx);
+                    Logger.LogException(ex);
                 }
                 response = View(form);
             }
-
 
             return response;
         }

@@ -12,44 +12,62 @@
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="glyphicon glyphicon-triangle-bottom"></span>
                 </button>
                 @Html.ActionLink("Kingdom Hearts", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        @Html.ActionLink("Home", "Index", "Home")
+                        @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = "glyphicon glyphicon-home" })
                     </li>
                     <li>
+                        @Html.ActionLink("Stats", "Index", "Stats", new { }, new { @class = "nvButton btn" })
+                    </li>
+                    <li style="margin-right:5px;">
                         <div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
                                 Enemies
                                 <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" style="padding-left:10px; width:200px;">
                                 <li>
-                                    @Html.ActionLink("Enemies", "Index", "Enemy")
+                                    <span class="glyphicon">
+                                        @Html.ActionLink("Enemies", "Index", "Enemy")
+                                    </span>
                                 </li>
-                                <li>
-
-                                    @if (!(Session["RoleName"] is null))
-                                    {
-                                        @Html.ActionLink("Create Enemy", "NewEnemy", "Enemy")
-                                    }
-                                </li>
-                                <li>
-                                    @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
-                                    {
-                                        @Html.ActionLink("Validate Enemies", "ViewUnvalidatedEnemy", "Enemy")
-                                    }
-                                </li>
+                                @if (!(Session["RoleName"] is null))
+                                {
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <span class="glyphicon glyphicon-pencil">
+                                                </span>
+                                            </div>
+                                            <div class="col-md-10">
+                                                @Html.ActionLink("Create Enemy", "NewEnemy", "Enemy", null, new { @class = "", style = "font-size:18px;" })
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
+                                {
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <span class="glyphicon glyphicon-check">
+                                                </span>
+                                            </div>
+                                            <div class="col-md-10">
+                                                @Html.ActionLink("Validate Enemies", "ViewUnvalidatedEnemy", "Enemy", null, new { @style = "font-size:18px;" })
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </li>
-                    <li>
+                    <li style="margin-right:5px;">
                         <div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
                                 Items
@@ -103,29 +121,54 @@
                     @if (!(Session["UserName"] is null))
                     {
                         <li>
-                            @Html.ActionLink(Session["UserName"].ToString(), "AccountView", "Account")
-                        </li>
-                        <li>
-                            <div style="margin-top:15px">
-                                <text class="text-muted"><b>@Session["RoleName"].ToString()</b></text>
+                            <div class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="background-color:darkslategray; color:white; margin-top:10px">
+                                    @Session["UserName"].ToString()
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        @if (Session["RoleName"].ToString() != "Admin")
+                                        {
+                                            @Html.ActionLink(" " + Session["UserName"].ToString(), "AccountView", "Account", new { }, new { @class = "glyphicon glyphicon-user" })
+
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-king">
+                                                @Html.ActionLink(Session["UserName"].ToString(), "AccountView", "Account")
+                                            </span>
+                                        }
+                                    </li>
+                                    <li>
+                                        <span class="glyphicon glyphicon-remove-sign">
+                                            @Html.ActionLink("Logout", "Logout", "Account")
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </li>
-                        <li>
-                            @Html.ActionLink("Logout", "Logout", "Account")
+                        <li style="color:gray;">
+
+                            @Html.ActionLink(Session["RoleName"].ToString(), "", "", new { @style = "color: gray;" })
+
                         </li>
                     }
                     else
                     {
                         <li>
-                            @Html.ActionLink("Login", "Login", "Account")
+                            @Html.ActionLink(" Login", "Login", "Account", new { }, new { @class = "glyphicon glyphicon-user" })
                         </li>
                         <li>
-                            @Html.ActionLink("Register", "Register", "Account")
+                            @Html.ActionLink(" Register", "Register", "Account", new { }, new { @class = "glyphicon glyphicon-queen" })
                         </li>
                     }
                 </ul>
             </div>
         </div>
+    </div>
+    <div>
+        <br />
     </div>
     <div class="container body-content">
         @RenderBody()

@@ -6,7 +6,7 @@
 
 <h2>New enemy information</h2>
 
-@using (Html.BeginForm("NewEnemy", "Enemy", FormMethod.Post, new{enctype="multipart/form-data"))
+@using (Html.BeginForm("NewEnemy", "Enemy", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => Model.Item1)
     @Html.HiddenFor(model => Model.Item2)

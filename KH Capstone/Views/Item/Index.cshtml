@@ -5,6 +5,7 @@
 }
 
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/Chart.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
 <h2>Item List</h2>
@@ -60,7 +61,7 @@
                     @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Admin"))
                     {
                         <td style="text-align:right;">
-                            @Html.ActionLink("Delete", "DeleteItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Delete", "DeleteItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure you wish to delete this item?');" })
                         </td>
                     }
                 </tr>
@@ -78,63 +79,10 @@
     </div>
 }
 
+
 <div class="row">
     <br />
 </div>
-
-@*<table class="table" style="background-color:cadetblue;">
-        <tbody>
-            @foreach (ItemPO item in Model)
-            {
-                if (item.Validated == true)
-                {
-                    <tr>
-                        <td rowspan="2" style="width:150px" ;>
-                        </td>
-                        <td>
-                            <text style="color:black;">Name: </text>
-                            <u>
-                                @Html.ActionLink(item.Name, "ViewItem", "Item", new { id = item.ItemID }, new {  })
-                            </u>
-                        </td>
-                        <td>
-                            <text>Shops</text>
-                            @if (item.Purchasable)
-                            {
-                                <span style="color:black;"><b> sell </b></span>
-                            }
-                            else
-                            {
-                                <span style="color:red;"><b> do not sell </b></span>
-                            }
-                            <text>this item</text>
-                        </td>
-                        @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
-                        {
-                            <td>
-                                @Html.ActionLink("Update", "UpdateItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-success" })
-                            </td>
-                        }
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <text style="color:black;">Description: </text>
-                            @item.Description
-                        </td>
-                        @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Admin"))
-                        {
-                            <td>
-                                @Html.ActionLink("Delete", "DeleteItem", "Item", new { id = item.ItemID }, new { @class = "btn btn-danger" })
-                            </td>
-                        }
-                    </tr>
-                    <tr style="background-color:darkslategray;">
-                        <td colspan="4"></td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>*@
 
 
 <script>

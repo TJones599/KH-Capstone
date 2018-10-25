@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/Chart.min.js"></script>
+
+<h1 class="hidden-xs" style="text-align:center">Item Statistics</h1>
+<div class="row">
+    <div class="col-md-6 hidden-xs" style="margin-top:10px">
+        <canvas id="itemBar"></canvas>
+    </div>
+    <div class="col-md-6 hidden-xs" style="margin-top:10px">
+        <canvas id="itemPie"></canvas>
+    </div>
+</div>
+<br />
+<br />
+
+<h1 class="hidden-xs" style="text-align:center;">World Statistics</h1>
+<div class="row">
+    <div class="col-md-6 hidden-xs" style="margin-top:10px">
+        <canvas id="locationBar"></canvas>
+    </div>
+    <div class="col-md-6 hidden-xs" style="margin-top:10px">
+        <canvas id="locationPie"></canvas>
+    </div>
+</div>
+
+<div class="hidden-lg hidden-md hidden-sm">
+    <p>We appologize, but your device is to small to see the graphs on this page!</p>
+</div>
+
+
+
+<script>
+    CreateChart('/Stats/GetItemData', 'bar', '#itemBar', 'Item Drop Frequency', 'Number of enemies that drop the item')
+    CreateChart('/Stats/GetItemData', 'pie', '#itemPie', 'Item Drop Frequency', '')
+    CreateChart('/Stats/GetEnemyData', 'bar', '#locationBar', 'Enemies per World', '')
+    CreateChart('/Stats/GetEnemyData', 'pie', '#locationPie', 'Enemies per World', '')
+
+    function CreateChart(dataUrl, chartType, chartTarget, chartTitle, barTitle) {
+        $.ajax({
+            type: "GET",
+            url: dataUrl,
+            dataType: "json",
+            success: function (dataResponse) {
+                DisplayChart(dataResponse, chartTarget, chartType, chartTitle, barTitle)
+            }
+        });
+    }
+
+    function DisplayChart(data, target, chartType, chartTitle, barTitle) {
+
+        var chartLabels = data["Labels"];
+        var chartDatasets1 = data["Values"];
+        var dataT = {
+            labels: chartLabels,
+            datasets: [{
+                label: barTitle,
+                data: chartDatasets1,
+                backgroundColor: ["rgba(0,255,0,.7)", "rgba(255,0,0,.7)", "rgba(0,0,255,.7)", "rgba(126,126,126,.7)", "rgba(126,0,35,.7)", "rgba(0,132,7,.7)",
+                    "rgba(249,63,248,.7)", "rgba(145,222,230,.7)", "rgba(18,85,65,.7)", "rgba(37,56,186,.7)", "rgba(137,137,15,.7)", "rgba(25,35,45,.7)",
+                    "rgba(183,210,58,.7)", "rgba(111,222,33,.7)",],
+                hoverBackgroundColor: "rgba(150,150,150,.3)",
+                borderColor: "black",
+                borderWidth: 1
+            }]
+        };
+        var ctx = $(target);
+        if (chartType == 'pie') {
+            var dropChart = new Chart(ctx, {
+                type: chartType,
+                data: dataT,
+                options:
+                {
+                    maintainAspectRatio: false,
+                    responseive: true,
+                    title: { display: true, text: chartTitle },
+                }
+            })
+        }
+        else {
+            var dropChart = new Chart(ctx, {
+                type: chartType,
+                data: dataT,
+                options:
+                {
+                    legend: {
+                        display: true
+                    },
+                    maintainAspectRatio: false,
+                    responseive: true,
+                    title: { display: true, text: chartTitle },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            }
+                        }]
+                    }
+                }
+            })
+            if (barTitle == '') {
+                dropChart.options.legend.display = false;
+            }
+        }
+    }
+</script>

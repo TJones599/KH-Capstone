@@ -9,6 +9,7 @@ using System.IO;
 using System.Web.Mvc;
 using KH_Capstone.Custom;
 using System.Web;
+using System;
 
 namespace KH_Capstone.Controllers
 {
@@ -17,7 +18,9 @@ namespace KH_Capstone.Controllers
         //global strings holding pathing information
         private readonly string connectionString;
         private readonly string logPath;
-        EnemyDAO eDAO;
+        private EnemyDAO eDAO;
+        ItemDAO iDAO;
+        EnemyItemDAO linkDAO;
 
         //controller to gather pathing information and set log path
         public EnemyController()
@@ -26,6 +29,9 @@ namespace KH_Capstone.Controllers
             logPath = Path.Combine(Path.GetDirectoryName(System.Web.HttpContext.Current.Server.MapPath("~")), ConfigurationManager.AppSettings["relative"]);
             Logger.logPath = logPath;
             eDAO = new EnemyDAO(connectionString, logPath);
+            iDAO = new ItemDAO(connectionString, logPath);
+            linkDAO = new EnemyItemDAO(connectionString, logPath);
+
         }
 
 
@@ -49,9 +55,19 @@ namespace KH_Capstone.Controllers
             }
             catch (SqlException sqlEx)
             {
-                Logger.LogSqlException(sqlEx);
-                throw;
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
             }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
+
             return View(enemyList);
         }
 
@@ -61,19 +77,14 @@ namespace KH_Capstone.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult NewEnemy()
         {
-            ActionResult response = new ViewResult();
+            ActionResult response;
 
             CreateEnemyVM enemy = new CreateEnemyVM();
-            enemy.Item1 = 0;
-            enemy.Item2 = 0;
-            enemy.Enemy = new EnemyPO();
-            enemy.Enemy.ImagePath = "";
             try
             {
-                ItemDAO iDAO = new ItemDAO(connectionString, logPath);
                 enemy.ItemList = Mapper.Mapper.ItemDOListToPO(iDAO.ViewAllItems());
 
                 //creating and adding default item "none" to drop down list
@@ -101,6 +112,15 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogSqlException(sqlEx);
                 }
+                response = View(enemy);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = View(enemy);
             }
             return response;
         }
@@ -112,33 +132,30 @@ namespace KH_Capstone.Controllers
         /// <param name="form">EnemyPO</param>
         /// <returns></returns>
         [HttpPost]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult NewEnemy(CreateEnemyVM form)
         {
-            ActionResult response = new ViewResult();
+            ActionResult response;
             //try catch to capture any sql errors
             try
             {
-                //instantiating enemydao
-                //setting validated field of enemypo to false, keeps it from being displayed until validated by mod/admin
-                form.Enemy.Validated = false;
-
-                //sets image
-                form.Enemy.ImagePath = "~/Images/Enemies/"+form.Enemy.Name+".png";
-
                 //checking for valid form entry
                 if (ModelState.IsValid)
                 {
-                    if (form.File != null)
+                    form.Enemy.Validated = false;
+                    if (form.File != null && form.File.ContentLength > 0)
                     {
-                        if (form.File.ContentLength > 0)
-                        {
-                            string path = Path.Combine(Server.MapPath("~/Images"), form.Enemy.Name);
-                            form.File.SaveAs(path);
-                        }
+                        form.Enemy.ImagePath = "~/Images/Enemies/" + form.Enemy.Name + ".png";
+                        string path = Server.MapPath(form.Enemy.ImagePath);
+                        form.File.SaveAs(path);
                     }
-
-
+                    else
+                    {
+                        string oldPath = System.Web.HttpContext.Current.Server.MapPath("~/Images/Enemies/heartless_emblem.png");
+                        string newPath = System.Web.HttpContext.Current.Server.MapPath("~/Images/Enemies/"+form.Enemy.Name+".png");
+                        System.IO.File.Copy(oldPath, newPath);
+                        form.Enemy.ImagePath = "~/Images/Enemies/" + form.Enemy.Name + ".png";
+                    }
 
                     //mapping po object to do and passing it to dao
                     EnemyDO enemy = Mapper.Mapper.EnemyPOtoDO(form.Enemy);
@@ -156,7 +173,21 @@ namespace KH_Capstone.Controllers
             catch (SqlException sqlEx)
             {
                 //logging any sql exceptions caught
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+
+                response = View(form);
+                //update response
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = View(form);
             }
 
             return response;
@@ -170,14 +201,13 @@ namespace KH_Capstone.Controllers
         /// <param name="id">EnemyID</param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult UpdateEnemy(int id)
         {
+            ActionResult response;
             EnemyUpdateVM enemy = new EnemyUpdateVM();
             try
             {
-                //instantiating an enemyDAO
-
                 //mapping an enemypo to our VM
                 enemy.Enemy = Mapper.Mapper.EnemyDOtoPO(eDAO.ViewSingleEnemy(id));
 
@@ -188,27 +218,22 @@ namespace KH_Capstone.Controllers
                 List<EnemyItemDetailsDO> itemDrops = linkDAO.ViewByEnemyID(id);
 
                 //assigning items 1 and 2 based on what was returned from the enemy_itemDAO
-                if (itemDrops.Count == 1)
+                if (itemDrops.Count >= 1)
                 {
                     enemy.Item1 = itemDrops[0].ItemID;
-                }
-                else if (itemDrops.Count == 2)
-                {
-                    enemy.Item1 = itemDrops[0].ItemID;
-                    enemy.Item2 = itemDrops[1].ItemID;
+                    if (itemDrops.Count == 2)
+                    {
+                        enemy.Item2 = itemDrops[1].ItemID;
+                    }
                 }
                 else
                 {
-                    //setting default values to 1 if no items where linked to enemy
-
-                    //default item "1" does not exist so no links will be made in the database, however modelstate will
-                    //not return false.
+                    //setting default values to 0 if no items where linked to enemy
                     enemy.Item1 = 0;
                     enemy.Item2 = 0;
                 }
 
                 //instantiating itemDAO and populating the view models item list for selection drop down list
-                ItemDAO iDAO = new ItemDAO(connectionString, logPath);
                 enemy.itemList = Mapper.Mapper.ItemDOListToPO(iDAO.ViewAllItems());
 
                 //creating and adding default item "none" to drop down list
@@ -221,13 +246,26 @@ namespace KH_Capstone.Controllers
 
                 enemy.itemList.Add(@default);
 
+                response = View(enemy);
             }
             catch (SqlException sqlEx)
             {
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+                response = RedirectToAction("Index", "Enemy");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Enemy");
             }
             //passing enemy view model to view
-            return View(enemy);
+            return response;
         }
 
 
@@ -237,65 +275,69 @@ namespace KH_Capstone.Controllers
         /// <param name="form">EnemyUpdateVM</param>
         /// <returns></returns>
         [HttpPost]
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult UpdateEnemy(EnemyUpdateVM form)
         {
-            ActionResult response = new ViewResult();
-
-            //if imagepath is null, gives empty string value
-            if (form.Enemy.ImagePath is null)
-            {
-                form.Enemy.ImagePath = "";
-            }
+            ActionResult response;
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //mapping enemy info from vm to enemypo to send to server
-                    EnemyPO Enemy = new EnemyPO();
-                    Enemy = Mapper.Mapper.MapEnemyUpdateVMtoEnemyPO(form);
+                    if (form.File != null && form.File.ContentLength > 0)
+                    {
+                        if (System.IO.File.Exists(Server.MapPath(form.Enemy.ImagePath)))
+                        {
+                            System.IO.File.Delete(Server.MapPath(form.Enemy.ImagePath));
+                        }
 
-                    EnemyDO enemy = Mapper.Mapper.EnemyPOtoDO(Enemy);
+                        string path = Server.MapPath(form.Enemy.ImagePath);
+                        form.File.SaveAs(path);
+                    }
+
+                    EnemyDO enemy = Mapper.Mapper.EnemyPOtoDO(form.Enemy);
 
                     //sending enemydo object to enemy dao, passing in the EnemyDo object
                     eDAO.UpdateEnemy(enemy);
 
                     //instantiate enemy_itemDAO
-                    EnemyItemDAO linkDAO = new EnemyItemDAO(connectionString, logPath);
 
                     //collecting old item drop information and deleting it
                     List<EnemyItemIDLink> dropList = Mapper.Mapper.DetailsDOtoPO(linkDAO.ViewByEnemyID(form.Enemy.EnemyID));
+
                     foreach (EnemyItemIDLink item in dropList)
                     {
                         linkDAO.DeleteEnemyItems(item.LinkID);
                     }
 
+                    //if item1 = item2, default item2 to 0. prevents enemy from having 2 links to 1 item.
                     if (form.Item1 == form.Item2)
                     {
                         form.Item2 = 0;
                     }
 
                     EnemyItemIDLink newLink = new EnemyItemIDLink();
-
                     newLink.EnemyID = form.Enemy.EnemyID;
 
                     //creating new links for item's 1 and 2, if item does not exist no link is made
-                    //default item does not exist
-                    newLink.ItemID = form.Item1;
-                    linkDAO.CreateEnemyDetails(Mapper.Mapper.DetailsPOtoDO(newLink));
+                    if (form.Item1 != 0)
+                    {
+                        newLink.ItemID = form.Item1;
+                        linkDAO.CreateEnemyDetails(Mapper.Mapper.DetailsPOtoDO(newLink));
+                    }
 
-                    newLink.ItemID = form.Item2;
-                    linkDAO.CreateEnemyDetails(Mapper.Mapper.DetailsPOtoDO(newLink));
+                    if (form.Item2 != 0)
+                    {
+                        newLink.ItemID = form.Item2;
+                        linkDAO.CreateEnemyDetails(Mapper.Mapper.DetailsPOtoDO(newLink));
+                    }
 
                     //set response to redirect to enemies homepage
                     response = RedirectToAction("Index", "Enemy");
                 }
                 else
                 {
-                    //if form is invalid, return form information
-
-                    //ToDo: include error message
+                    ModelState.AddModelError("Validated", "Missing information. Please fill in all fields.");
                     response = View(form);
                 }
 
@@ -303,14 +345,24 @@ namespace KH_Capstone.Controllers
             catch (SqlException sqlEx)
             {
                 //log any sql exceptions encountered
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+                ModelState.AddModelError("Validated", "Unable to Update enemy, Server not available.");
+                response = View(form);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = View(form);
             }
 
             return response;
         }
-
-
-        //ToDo: include a view to validate deletes
 
         /// <summary>
         /// delete selected enemy, takes in enemies id, accessable only to admins
@@ -318,7 +370,7 @@ namespace KH_Capstone.Controllers
         /// <param name="id">EnemyID</param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(3)]
+        [SecurityFilter(3)]
         public ActionResult DeleteEnemy(int id)
         {
             try
@@ -332,9 +384,12 @@ namespace KH_Capstone.Controllers
             catch (SqlException sqlEx)
             {
                 //log any encountered sql exceptions
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    //ToDo:add dropdown alert
+                    Logger.LogSqlException(sqlEx);
+                }
             }
-
             return RedirectToAction("Index", "Enemy");
         }
 
@@ -342,22 +397,36 @@ namespace KH_Capstone.Controllers
         /// ViewUnvalidatedEnemy method, takes in no arguments, accessable to mods and admins
         /// </summary>
         /// <returns></returns>
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult ViewUnvalidatedEnemy()
         {
+            ActionResult response;
             List<EnemyPO> enemyList = new List<EnemyPO>();
             try
             {
                 //collect all enemies from database
                 enemyList = Mapper.Mapper.EnemyDOListToPO(eDAO.ViewAllEnemies());
+                response = View(enemyList);
             }
             catch (SqlException sqlEx)
             {
                 //log sql exceptions encountered
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+                response = RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Home");
             }
             //send enemy list to the view
-            return View(enemyList);
+            return response;
         }
 
         /// <summary>
@@ -393,7 +462,7 @@ namespace KH_Capstone.Controllers
                 //create enemy drops vm and assign enemy information and PO dropList to it
                 EnemyDropsVM enemyVM = new EnemyDropsVM();
                 enemyVM.Items = dropList;
-                enemyVM.enemy = enemy;
+                enemyVM.enemyID = id;
 
                 //set response PartialView to target the correct partial view, and provide EnemyDropVM 
                 response = PartialView("_ViewEnemyDrops", enemyVM);
@@ -401,7 +470,17 @@ namespace KH_Capstone.Controllers
             catch (SqlException sqlEx)
             {
                 //log sql exceptions encountered
-                Logger.LogSqlException(sqlEx);
+                if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged)") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
             }
 
             return response;

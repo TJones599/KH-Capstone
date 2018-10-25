@@ -6,9 +6,12 @@
 
 <h2>Update @Model.Enemy.Name</h2>
 
-@using (Html.BeginForm("UpdateEnemy", "Enemy", FormMethod.Post))
+<img src="@Url.Content(Model.Enemy.ImagePath)" alt="@Model.Enemy.Name" height="150" width="150" />
+
+@using (Html.BeginForm("UpdateEnemy", "Enemy", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => Model.Enemy.EnemyID)
+    @Html.HiddenFor(model => Model.Enemy.ImagePath)
 
     @Html.LabelFor(model => Model.Enemy.Name)
     <div>
@@ -24,11 +27,7 @@
     <div>
         @Html.TextBoxFor(model => Model.Enemy.Description, new { @class = "form-control" })
     </div>
-
-    @Html.LabelFor(model => Model.Enemy.ImagePath)
-    <div>
-        @Html.TextBoxFor(model => Model.Enemy.ImagePath, new { @class = "form-control" })
-    </div>
+    
 
     @Html.LabelFor(model => Model.Item1)
     <div>
@@ -40,10 +39,15 @@
         @Html.DropDownListFor(model => Model.Item2, new SelectList(Model.itemList, "ItemID", "Name"), new { @style = "background-color:orange; color:black;" })
     </div>
 
+    <text>Image</text>
+    @Html.TextBoxFor(model => Model.File, new { type = "file" })
+
+
     @Html.LabelFor(model => Model.Enemy.Validated)
     <div>
         @Html.CheckBoxFor(model => Model.Enemy.Validated, new { @class = "form-control" })
     </div>
+
 
     <br />
 

@@ -11,23 +11,23 @@
                 </div>
                 <div class="col-md-7">
                     <div class="row" style="margin-top:15px">
-                        
-                            <text style="color:black;">Name: </text>
-                            @item.Name
-                            @*@Html.ActionLink(item.Name, "ViewItem", "Item", new { id = item.ItemID }, new { style = "color:lightcyan; text-decoration:underline;" })*@
-                        
-                        <div class="row" style="margin-top:15px">
-                            <text>Shops</text>
-                            @if (item.Purchasable)
-                            {
-                                <span style="color:black;"><b> sell </b></span>
-                            }
-                            else
-                            {
-                                <span style="color:red;"><b> do not sell </b></span>
-                            }
-                            <text>this item</text>
-                        </div>
+
+                        <text style="color:black;">Name: </text>
+                        @item.Name
+                        @*@Html.ActionLink(item.Name, "ViewItem", "Item", new { id = item.ItemID }, new { style = "color:lightcyan; text-decoration:underline;" })*@
+
+                    </div>
+                    <div class="row" style="margin-top:15px">
+                        <text>Shops</text>
+                        @if (item.Purchasable)
+                        {
+                            <span style="color:black;"><b> sell </b></span>
+                        }
+                        else
+                        {
+                            <span style="color:red;"><b> do not sell </b></span>
+                        }
+                        <text>this item</text>
                     </div>
                 </div>
                 <div class="row">
@@ -50,6 +50,6 @@
         }
     </div>
     <br />
-    <button onclick="CloseList(@Model.enemy.EnemyID)" style="color:white; background-color:cadetblue; margin-bottom:15px;">Close</button>
+    <button onclick="CloseList(@Model.enemyID)" style="color:white; background-color:cadetblue; margin-bottom:15px;">Close</button>
     <br />
 </div>

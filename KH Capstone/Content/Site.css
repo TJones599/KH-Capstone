@@ -31,12 +31,54 @@ td {
     color: white;
     font-size: 20px;
 }
+
+.form-control{
+    background-color:lightgoldenrodyellow;
+    color:black;
+}
+
 a {
     color: white;
     font-size: 20px;
 }
 
-.form-control{
-    background-color:lightgoldenrodyellow;
-    color:black;
+.navbar-toggle{
+    background-color:dimgray;
+}
+
+ul.dropdown-menu > li:hover{
+    color: black;
+    background-color: white;
+}
+
+    ul.dropdown-menu > li:hover span a,
+    ul.dropdown-menu > li:hover div a {
+        color: black;
+    }
+
+
+ul.dropdown-menu li span a{
+    padding:0em 0em 0em .1em;
+}
+
+ul.dropdown-menu li div.col-md-10{
+    padding:0px 0px 0px 5px;
+}
+
+li{
+    padding-bottom:5px;
+}
+
+canvas{
+    background-color:lightgray;
+    min-height:250px;
+}
+
+.nvButton{
+    background-color: darkslategray !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    margin-right: 5px !important;
+    margin-top: 10px !important;
+    border: 1px solid lightgray !important;
 }

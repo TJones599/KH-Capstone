@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace KH_Capstone.Custom
 {
-    public class Security_Filter : ActionFilterAttribute
+    public class SecurityFilter : ActionFilterAttribute
     {
         private readonly int _Role;
-        public Security_Filter(int role)
+        public SecurityFilter(int role)
         {
             _Role = role;
         }

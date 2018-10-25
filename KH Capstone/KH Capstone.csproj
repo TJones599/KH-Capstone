@@ -151,19 +151,24 @@
     <Compile Include="Controllers\EnemyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
-    <Compile Include="Custom\Security Filter.cs" />
+    <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="Custom\SecurityFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="LoggerPL\Logger.cs" />
+    <Compile Include="Mapper\BLLMapper.cs" />
     <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Models\ChartData.cs" />
     <Compile Include="Models\CreateEnemyVM.cs" />
     <Compile Include="Models\EnemyUpdateVM.cs" />
     <Compile Include="Models\EnemyDropsVM.cs" />
     <Compile Include="Models\EnemyPO.cs" />
     <Compile Include="Models\EnemyItemIDLink.cs" />
+    <Compile Include="Models\HomePageVM.cs" />
     <Compile Include="Models\ItemDropsVM.cs" />
     <Compile Include="Models\ItemPO.cs" />
+    <Compile Include="Models\ItemVM.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\RolePO.cs" />
     <Compile Include="Models\UserPO.cs" />
@@ -193,7 +198,7 @@
     <Content Include="Images\Enemies\Darkside.png" />
     <Content Include="Images\Enemies\Defender.png" />
     <Content Include="Images\Enemies\Fat-Bandit.png" />
-    <Content Include="Images\Enemies\heartlesss-emblem.png" />
+    <Content Include="Images\Enemies\heartless-emblem.png" />
     <Content Include="Images\Enemies\Screwdriver.png" />
     <Content Include="Images\Enemies\Shadow.png" />
     <Content Include="Images\Enemies\Soldier.png" />
@@ -220,6 +225,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -262,6 +269,8 @@
     <Content Include="Views\Enemy\_ViewEnemyDrops.cshtml" />
     <Content Include="Views\Item\_ViewDropsFrom.cshtml" />
     <Content Include="Views\Account\UpdatePassword.cshtml" />
+    <Content Include="Views\Home\GraphData.cshtml" />
+    <Content Include="Views\Stats\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -281,6 +290,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KH_Capstone_BLL\KH_Capstone_BLL.csproj">
+      <Project>{09034dd5-e74e-4302-b9a6-b1453f89111b}</Project>
+      <Name>KH_Capstone_BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KH_Capstone_DAL\KH_Capstone_DAL.csproj">
       <Project>{feec39ee-87b3-46e1-9382-f15567e8c807}</Project>
       <Name>KH_Capstone_DAL</Name>

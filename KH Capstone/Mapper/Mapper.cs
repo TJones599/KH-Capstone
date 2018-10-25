@@ -62,6 +62,11 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
+        internal static ItemPO ItemDOtoPO(object p)
+        {
+            throw new NotImplementedException();
+        }
+
         public static List<ItemPO> ItemDOListToPO(List<ItemDO> from)
         {
             List<ItemPO> to = new List<ItemPO>();
@@ -212,19 +217,6 @@ namespace KH_Capstone.Mapper
 
             return to;
         }
-
-        public static EnemyPO MapEnemyUpdateVMtoEnemyPO(EnemyUpdateVM form)
-        {
-            EnemyPO to = new EnemyPO();
-
-            to.EnemyID = form.Enemy.EnemyID;
-            to.Name = form.Enemy.Name;
-            to.Location = form.Enemy.Location;
-            to.Description = form.Enemy.Description;
-            to.ImagePath = form.Enemy.ImagePath;
-            to.Validated = form.Enemy.Validated;
-
-            return to;
-        }
+        
     }
 }

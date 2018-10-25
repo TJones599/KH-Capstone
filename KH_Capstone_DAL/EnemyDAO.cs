@@ -1,6 +1,7 @@
 ﻿using KH_Capstone_DAL.LoggerDAO;
 using KH_Capstone_DAL.Mappers;
 using KH_Capstone_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -47,10 +48,17 @@ namespace KH_Capstone_DAL
             }
             catch (SqlException sqlEx)
             {
-                sqlEx.Data["Logged"] = true;
                 //logs any captured sql errors
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+
                 throw sqlEx;
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                ex.Data["Logged"] = true;
+                throw ex;
             }
 
             //returns enemy information
@@ -67,13 +75,13 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand PullAllEnemies = new SqlCommand("ENEMY_PULL_ALL", sqlConnection))
+                using (SqlCommand pullAllEnemies = new SqlCommand("ENEMY_PULL_ALL", sqlConnection))
                 {
-                    PullAllEnemies.CommandType = System.Data.CommandType.StoredProcedure;
+                    pullAllEnemies.CommandType = System.Data.CommandType.StoredProcedure;
 
                     sqlConnection.Open();
 
-                    using (SqlDataReader reader = PullAllEnemies.ExecuteReader())
+                    using (SqlDataReader reader = pullAllEnemies.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -87,6 +95,14 @@ namespace KH_Capstone_DAL
             {
                 //logs the sql errors that occure
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                ex.Data["Logged"] = true;
+                throw ex;
             }
 
             return enemy;
@@ -120,6 +136,8 @@ namespace KH_Capstone_DAL
             {
                 //logging any sql errors that occur
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
 
@@ -143,6 +161,8 @@ namespace KH_Capstone_DAL
             catch (SqlException sqlEx)
             {
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
 
@@ -177,6 +197,8 @@ namespace KH_Capstone_DAL
             {
                 //logging any sql errors that occure
                 Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
             }
         }
     }

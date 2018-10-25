@@ -1,58 +1,43 @@
 ﻿@using KH_Capstone.Models
-@model ItemPO
+@model ItemVM
 @{
     ViewBag.Title = "UpdateItem";
 }
 
-<h2>Update @Model.Name</h2>
+<h2>Update @Model.Item.Name</h2>
 
-@using (Html.BeginForm("UpdateItem", "Item", FormMethod.Post))
+@using (Html.BeginForm("UpdateItem", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.HiddenFor(model => Model.ItemID)
-    @Html.HiddenFor(model => Model.ImagePath)
-
-    @Html.LabelFor(model => Model.Name)
+    @Html.HiddenFor(model => Model.Item.ItemID)
+    @Html.HiddenFor(model => Model.Item.ImagePath)
     <div>
-        @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
+        <img src="@Url.Content(Model.Item.ImagePath)" alt="@Model.Item.Name" height="150" width="150"/>
+    </div>
+
+    @Html.LabelFor(model => Model.Item.Name)
+    <div>
+        @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
     </div>
     <br />
 
-    @Html.LabelFor(model => Model.Description)
+    @Html.LabelFor(model => Model.Item.Description)
     <div>
-        @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
+        @Html.TextBoxFor(model => Model.Item.Description, new { @class = "form-control" })
     </div>
     <br />
-
-    @Html.LabelFor(model => Model.Type)
-    <div>
-        <input type="radio" name="Type" value="" class="hidden" checked="checked"/>
-
-        <label>Item</label>
-        <input type="radio" name="Type" value="Item" style="width:18px; height:18px;" />
-
-        <label>Accessory</label>
-        <input type="radio" name="Type" value="Accessory" style="width:18px; height:18px;" />
-    </div>
-    @Html.ValidationMessageFor(model => Model.Type, "", new { @style = "color:red" })
+    @Html.TextBoxFor(model => Model.File, new { type = "file" })
     <br />
 
-    @*<div>
-            <select class="form-control" id="ImagePath" name="ImagePath">
-                <option>Item</option>
-                <option>Accessory</option>
-            </select>
-        </div>*@
-
-    @Html.LabelFor(model => Model.Purchasable, new { @class = "control-label col-md-2" })
+    @Html.LabelFor(model => Model.Item.Purchasable, new { @class = "control-label col-md-2" })
     <div>
-        @Html.CheckBoxFor(model => Model.Purchasable, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Purchasable, "", new { @style = "color:red" })
+        @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Item.Purchasable, "", new { @style = "color:red" })
     </div>
 
-    @Html.LabelFor(model => Model.Validated, new { @class = "control-label col-md-2" })
+    @Html.LabelFor(model => Model.Item.Validated, new { @class = "control-label col-md-2" })
     <div>
-        @Html.CheckBoxFor(model => Model.Validated, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Validated, "", new { @style = "color:red" })
+        @Html.CheckBoxFor(model => Model.Item.Validated, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Item.Validated, "", new { @style = "color:red" })
     </div>
     <br />
 

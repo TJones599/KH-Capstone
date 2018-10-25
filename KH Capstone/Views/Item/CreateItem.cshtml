@@ -1,36 +1,29 @@
 ﻿@using KH_Capstone.Models
-@model ItemPO
+@model ItemVM
 @{
     ViewBag.Title = "CreateItem";
 }
 
 <h2>Create new item:</h2>
 
-@using (Html.BeginForm("CreateItem", "Item", FormMethod.Post))
+@using (Html.BeginForm("CreateItem", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.LabelFor(model => Model.Name)
+    @Html.LabelFor(model => Model.Item.Name)
     <div>
-        @Html.TextBoxFor(model => Model.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Name, "", new { @style = "color:red;" })
+        @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Item.Name, "", new { @style = "color:red;" })
     </div>
-    @Html.LabelFor(model => Model.Description)
+    @Html.LabelFor(model => Model.Item.Description)
     <div>
-        @Html.TextBoxFor(model => Model.Description, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Description, "", new { @style = "color:red;" })
+        @Html.TextBoxFor(model => Model.Item.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => Model.Item.Description, "", new { @style = "color:red;" })
     </div>
-    <div style="margin-top:5px; margin-bottom:5px;">
-        <text><b>Item Type</b></text>
-    </div>
+
+    @Html.LabelFor(model => Model.Item.Purchasable)
     <div>
-        <select class="form-control" id="ImagePath" name="ImagePath">
-            <option>Item</option>
-            <option>Accessory</option>
-        </select>
+        @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "height: 27px; width: 27px;" })
     </div>
-    @Html.LabelFor(model => Model.Purchasable)
-    <div>
-        @Html.CheckBoxFor(model => Model.Purchasable, new { @style = "height: 27px; width: 27px;" })
-    </div>
+    @Html.TextBoxFor(model => Model.File, new { type = "file" })
     <br />
     <input type="submit" value="Create" class="btn btn-success" />
 }

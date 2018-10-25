@@ -1,22 +1,124 @@
-﻿@{
+﻿@using KH_Capstone.Models
+@model HomePageVM
+@{
     ViewBag.Title = "Home Page";
 }
 
 <div>
     <div>
-        <img src="~/Images/Home/maxresdefault.png" class="col-xs-12"/>
+        <img src="~/Images/Home/maxresdefault.png" class="col-xs-12" />
     </div>
 
     <div style="text-align:center;">
-        <div id="About" class="col-md-6 col-md-push-3">
-            <h3>About</h3>
-            <p>Kingdom Hearts was originaly released in 2002. It was published and developed by Square-Enix.</p>
+        <div class="row" style="text-align:left;">
+        </div>
+        <div class="row">
+            <div id="About" class="col-md-8 col-md-push-2">
+                <h3>About</h3>
+                <p>
+                    Kingdom Hearts was originaly released in 2002. It was published and developed by Square-Enix, and Directed by <b>Tetsuya Nomura.</b>
+                    The series is a joint effort between Disney Interactive and Square-Enix featuring many of the most popular Disney characters and
+                    their struggle to fight against the darkness in peoples hearts, bringing them back into the light.
+                </p>
+            </div>
         </div>
     </div>
+    <br />
 
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-sm-5">
+                <table class="table" style="background-color:cadetblue;">
+                    <tbody>
+                        <tr style="text-align:center; background-color:darkslategrey;"><td colspan="2">Most Common Itemdrop</td></tr>
+                        <tr>
+                            <td rowspan="3" style="width:150px" ;>
+                                <img src="@Url.Content(Model.MostCommonItem.ImagePath)" alt="@Model.MostCommonItem.Name" height="150" width="150" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <text style="color:black;">Name: </text>
+                                @Model.MostCommonItem.Name
+                            </td>
+                        </tr>
+                        <tr>
 
+                            <td>
+                                <text>Shops</text>
+                                @if (Model.MostCommonItem.Purchasable)
+                                {
+                                    <span style="color:black;"><b> sell </b></span>
+                                }
+                                else
+                                {
+                                    <span style="color:red;"><b> do not sell </b></span>
+                                }
+                                <text>this item</text>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <text style="color:black;">Description: </text>
+                                @Model.MostCommonItem.Description
+                            </td>
+                        </tr>
+                        <tr style="background-color:darkslategray;">
+                            <td colspan="4"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <div class="col-sm-2">
+            </div>
 
+            <div class="col-sm-5">
+                <table class="table" style="background-color:cadetblue;">
+                    <tbody>
+                        <tr style="text-align:center; background-color:darkslategrey;"><td colspan="2">Least Common Itemdrop</td></tr>
+                        <tr>
+                            <td rowspan="3" style="width:150px" ;>
+                                <img src="@Url.Content(Model.LeastCommonItem.ImagePath)" alt="@Model.LeastCommonItem.Name" height="150" width="150" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <text style="color:black;">Name: </text>
+                                @Model.LeastCommonItem.Name
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <text>Shops</text>
+                                @if (Model.LeastCommonItem.Purchasable)
+                                {
+                                    <span style="color:black;"><b> sell </b></span>
+                                }
+                                else
+                                {
+                                    <span style="color:red;"><b> do not sell </b></span>
+                                }
+                                <text>this item</text>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <text style="color:black;">Description: </text>
+                                @Model.LeastCommonItem.Description
+                            </td>
+                        </tr>
+                        <tr style="background-color:darkslategray;">
+                            <td colspan="4"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+     
     <div style="margin-top:50px;">
         <br />
     </div>

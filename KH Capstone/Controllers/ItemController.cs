@@ -1,8 +1,10 @@
 ﻿using KH_Capstone.Custom;
 using KH_Capstone.LoggerPL;
 using KH_Capstone.Models;
+using KH_Capstone_BLLs;
 using KH_Capstone_DAL;
 using KH_Capstone_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -17,6 +19,8 @@ namespace KH_Capstone.Controllers
         private readonly string connectionString;
         private readonly string logPath;
         ItemDAO iDAO;
+        EnemyItemDAO linkDAO;
+        EnemyDAO eDAO;
 
         /// <summary>
         /// gathering information for global variables, instantiating ItemDAO with newly aquired connectionString, and logPath.
@@ -28,6 +32,8 @@ namespace KH_Capstone.Controllers
             logPath = Path.Combine(Path.GetDirectoryName(System.Web.HttpContext.Current.Server.MapPath("~")), ConfigurationManager.AppSettings["relative"]);
             Logger.logPath = logPath;
             iDAO = new ItemDAO(connectionString, logPath);
+            linkDAO = new EnemyItemDAO(connectionString, logPath);
+            eDAO = new EnemyDAO(connectionString, logPath);
         }
 
         //view all items
@@ -38,13 +44,16 @@ namespace KH_Capstone.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            List<ItemPO> itemList = new List<ItemPO>();
+            ActionResult response;
 
             //try to connect to the server and aquire all item information
             try
             {
+                List<ItemPO> itemList = new List<ItemPO>();
                 //mapping to ItemPO collection
                 itemList = Mapper.Mapper.ItemDOListToPO(iDAO.ViewAllItems());
+
+                response = View(itemList);
             }
             //catch and log any sqlExceptions encountered during db call
             catch (SqlException sqlEx)
@@ -54,9 +63,18 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogSqlException(sqlEx);
                 }
+                response = RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Home");
             }
 
-            return View(itemList);
+            return response;
         }
 
 
@@ -67,7 +85,7 @@ namespace KH_Capstone.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(1)]
+        [SecurityFilter(1)]
         public ActionResult CreateItem()
         {
             return View();
@@ -79,11 +97,10 @@ namespace KH_Capstone.Controllers
         /// <param name="form"></param>
         /// <returns></returns>
         [HttpPost]
-        [Security_Filter(1)]
-        public ActionResult CreateItem(ItemPO form)
+        [SecurityFilter(1)]
+        public ActionResult CreateItem(ItemVM form)
         {
-            ActionResult response = new ViewResult();
-
+            ActionResult response;
 
             //try to connect to the server and create a new item
             try
@@ -91,23 +108,26 @@ namespace KH_Capstone.Controllers
                 //Makes sure everything required was entered in the view
                 if (ModelState.IsValid)
                 {
-                    form.Validated = false;
-                    //looks to see which option was choosen, and sets filepath accordingly
-                    switch (form.ImagePath)
+                    form.Item.Validated = false;
+
+                    if (form.File != null && form.File.ContentLength > 0)
                     {
-                        case "Item":
-                            {
-                                form.ImagePath = "~/Images/Items/Item.png";
-                                break;
-                            }
-                        case "Accessory":
-                            {
-                                form.ImagePath = "~/Images/Items/Accessory.png";
-                                break;
-                            }
+                        form.Item.ImagePath = "~/Images/Items/" + form.Item.Name + ".png";
+
+                        if (System.IO.File.Exists(Server.MapPath(form.Item.ImagePath)))
+                        {
+                            System.IO.File.Delete(Server.MapPath(form.Item.ImagePath));
+                        }
+                        string path = Server.MapPath(form.Item.ImagePath);
+                        form.File.SaveAs(path);
+                    }
+                    else
+                    {
+                        form.Item.ImagePath = "~/Images/Items/Item/Item.png";
                     }
 
-                    iDAO.CreateNewItem(Mapper.Mapper.ItemPOtoDO(form));
+                    iDAO.CreateNewItem(Mapper.Mapper.ItemPOtoDO(form.Item));
+
                     response = RedirectToAction("Index", "Item");
                 }
                 //returns to view if modelstate was false
@@ -124,6 +144,15 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogSqlException(sqlEx);
                 }
+                response = RedirectToAction("Index", "Item");
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+                response = RedirectToAction("Index", "Item");
             }
 
             return response;
@@ -136,14 +165,15 @@ namespace KH_Capstone.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult UpdateItem(int id)
         {
-            ActionResult response = new ViewResult();
+            ActionResult response;
             //try to connect to the db and pull the indicated users information
             try
             {
-                ItemPO item = Mapper.Mapper.ItemDOtoPO(iDAO.ViewItemSingle(id));
+                ItemVM item = new ItemVM();
+                item.Item = Mapper.Mapper.ItemDOtoPO(iDAO.ViewItemSingle(id));
                 response = View(item);
             }
             //catch and log any unlogged sqlExceptions encountered
@@ -152,6 +182,14 @@ namespace KH_Capstone.Controllers
                 if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
                 {
                     Logger.LogSqlException(sqlEx);
+                }
+                response = RedirectToAction("Index", "Item");
+            }
+            catch(Exception ex)
+            {
+                if(!ex.Data.Contains("Logged")||(bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
                 }
                 response = RedirectToAction("Index", "Item");
             }
@@ -165,11 +203,10 @@ namespace KH_Capstone.Controllers
         /// <param name="form"></param>
         /// <returns></returns>
         [HttpPost]
-        [Security_Filter(2)]
-        public ActionResult UpdateItem(ItemPO form)
+        [SecurityFilter(2)]
+        public ActionResult UpdateItem(ItemVM form)
         {
-            ActionResult response = new ViewResult();
-
+            ActionResult response;
 
             //try to connect to the db and update items information
             try
@@ -177,59 +214,46 @@ namespace KH_Capstone.Controllers
                 //first test to see if item form was properly filled out
                 if (ModelState.IsValid)
                 {
-                    //updates ImagePath based on selected option
-                    switch (form.Type)
+                    if (form.File != null)
                     {
-                        case "Item":
-                            {
-                                if (System.IO.File.Exists(Server.MapPath("~") + "/Images/Items/Item/" + form.Name + ".png"))
-                                {
-                                    form.ImagePath = "~/Images/Items/Item/" + form.Name + ".png";
-                                }
-                                else
-                                {
-                                    form.ImagePath = "~/Images/Items/Item/Item.png";
-                                }
-                                break;
-                            }
-                        case "Accessory":
-                            {
-                                if (System.IO.File.Exists(Server.MapPath("~") + "/Images/Items/Accessory/" + form.Name + ".png"))
-                                {
-                                    form.ImagePath = "~/Images/Items/Accessory/" + form.Name + ".png";
-                                }
-                                else
-                                {
-                                    form.ImagePath = "~/Images/Items/Accessory/Accessory.png";
-                                }
-                                break;
-                            }
+                        if (System.IO.File.Exists(Server.MapPath(form.Item.ImagePath)))
+                        {
+                            System.IO.File.Delete(Server.MapPath(form.Item.ImagePath));
+                        }
+
+                        if (form.File.ContentLength > 0)
+                        {
+                            string path = Server.MapPath(form.Item.ImagePath);
+                            form.File.SaveAs(path);
+                        }
                     }
 
-                    iDAO.UpdateItem(Mapper.Mapper.ItemPOtoDO(form));
+                    iDAO.UpdateItem(Mapper.Mapper.ItemPOtoDO(form.Item));
                     response = RedirectToAction("Index", "Item");
                 }
                 //If not filled out properly, return to View, with error messages for imagepath , or a general error of missing information.
                 //ImagePath is a Radio button selection
                 else
                 {
-                    if (form.ImagePath == null)
-                    {
-                        ModelState.AddModelError("ImagePath", "Please select one!");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Validated", "Missing information");
-                    }
+                    ModelState.AddModelError("Validated", "Missing information");
+
                     response = View(form);
                 }
-            //catch and log any unlogged sqlExceptions encountered
+                //catch and log any unlogged sqlExceptions encountered
             }
             catch (SqlException sqlEx)
             {
                 if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
                 {
                     Logger.LogSqlException(sqlEx);
+                }
+                response = View(form);
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
                 }
                 response = View(form);
             }
@@ -245,10 +269,9 @@ namespace KH_Capstone.Controllers
         /// <param name="id">ItemID</param>
         /// <returns></returns>
         [HttpGet]
-        [Security_Filter(3)]
+        [SecurityFilter(3)]
         public ActionResult DeleteItem(int id)
         {
-            EnemyItemDAO linkDAO = new EnemyItemDAO(connectionString, logPath);
             //try to connect to server, and delete item by id
             try
             {
@@ -263,6 +286,13 @@ namespace KH_Capstone.Controllers
                     Logger.LogSqlException(sqlEx);
                 }
             }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
             //return to Items home page
             return RedirectToAction("Index", "Item");
         }
@@ -271,7 +301,7 @@ namespace KH_Capstone.Controllers
         /// ViewUnvalidatedItems() pulls all items from db. View filters by Validated field 
         /// </summary>
         /// <returns></returns>
-        [Security_Filter(2)]
+        [SecurityFilter(2)]
         public ActionResult ViewUnvalidatedItems()
         {
             List<ItemPO> itemList = new List<ItemPO>();
@@ -288,6 +318,13 @@ namespace KH_Capstone.Controllers
                     Logger.LogSqlException(sqlEx);
                 }
             }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
             return View(itemList);
         }
 
@@ -300,10 +337,6 @@ namespace KH_Capstone.Controllers
         public PartialViewResult ViewDropsFrom(int id)
         {
             PartialViewResult response = new PartialViewResult();
-            
-            //instantiating EnemyDAO and EnemyItemDAO for later user
-            EnemyDAO eDAO = new EnemyDAO(connectionString, logPath);
-            EnemyItemDAO linkDAO = new EnemyItemDAO(connectionString, logPath);
 
             //try to connect to the database via multiple DAO's
             try
@@ -346,8 +379,16 @@ namespace KH_Capstone.Controllers
                     Logger.LogSqlException(sqlEx);
                 }
             }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
 
             return response;
         }
+
     }
 }

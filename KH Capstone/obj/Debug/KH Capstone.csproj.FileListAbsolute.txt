@@ -184,3 +184,5 @@ C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\obj\Debug\KH Capst
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\obj\Debug\KH Capstone.csproj.CopyComplete
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\obj\Debug\KH Capstone.dll
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\obj\Debug\KH Capstone.pdb
+C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\bin\KH_Capstone_BLL.dll
+C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\bin\KH_Capstone_BLL.pdb

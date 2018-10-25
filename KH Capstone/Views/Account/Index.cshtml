@@ -4,89 +4,80 @@
     ViewBag.Title = "Index";
 }
 
-<h2>All Users</h2>
-
-<table class="table" style="width:50%">
-    <thead>
-        <tr>
-            <th>
-                User Name
-            </th>
-            <th>
-                First Name
-            </th>
-            <th>
-                Last Name
-            </th>
-            <th>
-                Role
-            </th>
-            <th>
-                Banned
-            </th>
-            <th colspan="2">
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (UserPO user in Model)
-        {
-            if (!user.Inactive)
-            {
+<h2 style="text-align:center;">All Users</h2>
+<br>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <table class="table text-nowrap" style="width:50%">
+            <thead>
                 <tr>
-                    <td>
-                        @user.UserName
-                    </td>
-                    <td>
-                        @user.FirstName
-                    </td>
-                    <td>
-                        @user.LastName
-                    </td>
-                    <td>
-                        @user.RoleName
-                    </td>
-                    <td>
-                        @if (user.Banned)
-                        {
-                            <text>True</text>
-                        }
-                        else
-                        {
-                            <text>False</text>
-                        }
-
-                    </td>
-                    <td>
-                        @if ((int)Session["Role"] > user.Role)
-                        {
-                            @Html.ActionLink("Update", "UpdateUser", "Account", new { id = user.UserID }, new { @class = "btn btn-primary" })
-                        }
-                    </td>
-                    <td>
-                        @if (Session["RoleName"].ToString() =="Admin")
-                        {
-                            @Html.ActionLink("Delete", "DeleteUser", "Account", new { id = user.UserID }, new { @class = "btn btn-danger" })
-                        }
-                    </td>
-                    @*<td>
-                            @if (user.Banned)
-                            {
-                                @Html.ActionLink("Unban", "Unban", "Account", new { UserID = user.UserID }, new { @class = "btn btn-success" })
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Ban", "Ban", "Account", new { UserID = user.UserID }, new { @class = "btn btn-danger" })
-                            }
-                        </td>*@
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        Last Name
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        Banned
+                    </th>
+                    <th colspan="2">
+                        Actions
+                    </th>
                 </tr>
-            }
-        }
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                @foreach (UserPO user in Model)
+                {
+                    if (!user.Inactive)
+                    {
+                        <tr>
+                            <td>
+                                @user.UserName
+                            </td>
+                            <td>
+                                @user.FirstName
+                            </td>
+                            <td>
+                                @user.LastName
+                            </td>
+                            <td>
+                                @user.RoleName
+                            </td>
+                            <td>
+                                @if (user.Banned)
+                                {
+                                    <text>True</text>
+                                }
+                                else
+                                {
+                                    <text>False</text>
+                                }
 
-
-
+                            </td>
+                            <td>
+                                @if ((int)Session["Role"] > user.Role)
+                                {
+                                    @Html.ActionLink("Update", "UpdateUser", "Account", new { id = user.UserID }, new { @class = "btn btn-primary" })
+                                }
+                            </td>
+                            <td>
+                                @if (Session["RoleName"].ToString() == "Admin" && user.Role != (int)Session["Role"])
+                                {
+                                    @Html.ActionLink("Delete", "DeleteUser", "Account", new { id = user.UserID }, new { @class = "btn btn-danger" })
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 

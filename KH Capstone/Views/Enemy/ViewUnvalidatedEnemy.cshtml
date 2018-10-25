@@ -35,7 +35,7 @@
                             @enemy.Description
                         </td>
                         <td>
-                            @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure you wish to delete this enemy?');" })
                         </td>
                     }
                     else
