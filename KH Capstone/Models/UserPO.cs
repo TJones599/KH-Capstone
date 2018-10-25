@@ -13,11 +13,15 @@ namespace KH_Capstone.Models
         [Required]
         public string UserName { get; set; }
         
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
+
+        public string OldPassword { get; set; }
 
         public string NewPassword { get; set; }
 
         public string PasswordConfirmation { get; set; }
+
+        public string Salt { get; set; }
 
         public int Role { get; set; }
 

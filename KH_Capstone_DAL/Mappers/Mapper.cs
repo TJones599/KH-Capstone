@@ -25,13 +25,14 @@ namespace KH_Capstone_DAL.Mappers
 
             user.UserId = (int)from["UserID"];
             user.UserName = from["UserName"] as string;
-            user.Password = from["Password"] as string;
+            user.Password = from["Password"] as byte[];
             user.RoleName = from["RoleName"] as string;
             user.Role = (int)from["Role"];
             user.FirstName = from["FirstName"] as string;
             user.LastName = from["LastName"] as string;
             user.Banned = (bool)from["Banned"];
             user.Inactive = (bool)from["Inactive"];
+            user.Salt = from["Salt"] as string;
 
             return user;
         }

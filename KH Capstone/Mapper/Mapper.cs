@@ -48,6 +48,7 @@ namespace KH_Capstone.Mapper
             return enemyList;
         }
 
+
         public static ItemDO ItemPOtoDO(ItemPO from)
         {
             ItemDO to = new ItemDO();
@@ -59,21 +60,6 @@ namespace KH_Capstone.Mapper
             to.Purchasable = from.Purchasable;
             to.Validated = from.Validated;
 
-            return to;
-        }
-
-        internal static ItemPO ItemDOtoPO(object p)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static List<ItemPO> ItemDOListToPO(List<ItemDO> from)
-        {
-            List<ItemPO> to = new List<ItemPO>();
-            foreach(ItemDO item in from)
-            {
-                to.Add(ItemDOtoPO(item));
-            }
             return to;
         }
 
@@ -90,6 +76,19 @@ namespace KH_Capstone.Mapper
 
             return to;
         }
+        
+
+        public static List<ItemPO> ItemDOListToPO(List<ItemDO> from)
+        {
+            List<ItemPO> to = new List<ItemPO>();
+            foreach(ItemDO item in from)
+            {
+                to.Add(ItemDOtoPO(item));
+            }
+            return to;
+        }
+
+
 
         public static UserDO UserPOtoDO(UserPO from)
         {
@@ -104,6 +103,8 @@ namespace KH_Capstone.Mapper
             to.LastName = from.LastName;
             to.Banned = from.Banned;
             to.Inactive = from.Inactive;
+            to.Salt = from.Salt;
+
 
             return to;
         }
@@ -121,6 +122,7 @@ namespace KH_Capstone.Mapper
             to.LastName = from.LastName;
             to.Banned = from.Banned;
             to.Inactive = from.Inactive;
+            to.Salt = from.Salt;
 
             return to;
         }
@@ -142,12 +144,15 @@ namespace KH_Capstone.Mapper
                 temp.LastName = user.LastName;
                 temp.Banned = user.Banned;
                 temp.Inactive = user.Inactive;
+                temp.Salt = user.Salt;
+
 
                 to.Add(temp);
             }
 
             return to;
         }
+
 
         public static EnemyItemIDLink DetailsDOtoPO(EnemyItemDetailsDO from)
         {
@@ -200,6 +205,7 @@ namespace KH_Capstone.Mapper
 
             return to;
         }
+
 
         public static List<RolePO> RoleDOListToPOList(List<RoleDO> from)
         {

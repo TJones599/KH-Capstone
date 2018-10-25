@@ -12,7 +12,7 @@ namespace KH_Capstone_DAL.Models
 
         public string UserName { get; set; }
 
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
 
         public int Role { get; set; }
 
@@ -25,5 +25,7 @@ namespace KH_Capstone_DAL.Models
         public bool Banned { get; set; }
 
         public bool Inactive { get; set; }
+
+        public string Salt { get; set; }
     }
 }

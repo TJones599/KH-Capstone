@@ -9,6 +9,7 @@ using System.IO;
 using System.Web.Mvc;
 using KH_Capstone.Custom;
 using System;
+using KH_Capstone_BLL;
 
 namespace KH_Capstone.Controllers
 {
@@ -157,12 +158,6 @@ namespace KH_Capstone.Controllers
         public ActionResult UpdateUser(UserUpdateVM form)
         {
             ActionResult response;
-            //tests to see if a new password has been entered and if it is the same as the password confirmmation
-            //if valid, updates password to the new password
-            if (form.User.NewPassword != null && (form.User.PasswordConfirmation == form.User.NewPassword))
-            {
-                form.User.Password = form.User.NewPassword;
-            }
 
             //FirstName and LastName are optional, however cannot be null. This sets them to an empty string if they are null
             if (form.User.FirstName == null)
@@ -300,8 +295,12 @@ namespace KH_Capstone.Controllers
                     //if user id = 0, user does not exist. returns to view, passing back the form and error message
                     if (user.UserID != 0)
                     {
+                        byte[] tempHash = Hashing.GenerateSHA256Hash(form.Password, user.Salt);
+                        bool passwordsMatch = Hashing.CompareByteArray(user.Password, tempHash);
+
+                        //ToDo: unhash password
                         //tests if users stored password matches the one entered. if false, returns to view passing back the form and error message
-                        if (form.Password.Equals(user.Password))
+                        if (passwordsMatch)
                         {
 
                             if (!user.Banned && !user.Inactive)
@@ -406,7 +405,9 @@ namespace KH_Capstone.Controllers
                     //the entered form and an error message.
                     if (form.NewPassword == form.PasswordConfirmation)
                     {
-                        form.Password = form.NewPassword;
+                        //ToDo: Hash password
+                        form.Salt = Hashing.CreateSalt(10);
+                        form.Password = Hashing.GenerateSHA256Hash(form.NewPassword, form.Salt);
 
                         //FirstName and LastName are optional cannot be null. Sets them to empty string if null
                         if (form.FirstName == null)
@@ -510,38 +511,44 @@ namespace KH_Capstone.Controllers
         public ActionResult UpdatePassword(UserPO form)
         {
             ActionResult response = new ViewResult();
-            if (form.NewPassword == form.PasswordConfirmation)
-            {
-                form.Password = form.NewPassword;
-            }
 
+            byte[] oldPassword = Hashing.GenerateSHA256Hash(form.OldPassword, form.Salt);
+            bool passwordsMatch = Hashing.CompareByteArray(oldPassword, form.Password);
 
-            try
+            if (passwordsMatch)
             {
-                UserDO user = Mapper.Mapper.UserPOtoDO(form);
-                _UserDAO.UpdateUser(user);
-                response = RedirectToAction("AccountView", "Account");
-            }
-            catch (SqlException sqlEx)
-            {
-                if (sqlEx.Data.Contains("Logged"))
+                if (form.NewPassword == form.PasswordConfirmation)
                 {
-                    if ((bool)sqlEx.Data["Logged"] == false)
+                    form.Salt = Hashing.CreateSalt(10);
+                    form.Password = Hashing.GenerateSHA256Hash(form.NewPassword, form.Salt);
+                }
+
+                try
+                {
+                    UserDO user = Mapper.Mapper.UserPOtoDO(form);
+                    _UserDAO.UpdateUser(user);
+                    response = RedirectToAction("AccountView", "Account");
+                }
+                catch (SqlException sqlEx)
+                {
+                    if (sqlEx.Data.Contains("Logged"))
                     {
-                        Logger.LogSqlException(sqlEx);
+                        if ((bool)sqlEx.Data["Logged"] == false)
+                        {
+                            Logger.LogSqlException(sqlEx);
+                        }
                     }
+                    response = View(form);
                 }
-                response = View(form);
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                catch (Exception ex)
                 {
-                    Logger.LogException(ex);
+                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                    {
+                        Logger.LogException(ex);
+                    }
+                    response = View(form);
                 }
-                response = View(form);
             }
-
             return response;
         }
     }

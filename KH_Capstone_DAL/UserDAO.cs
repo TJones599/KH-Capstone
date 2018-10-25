@@ -120,6 +120,7 @@ namespace KH_Capstone_DAL
                     sqlCMD.Parameters.AddWithValue("FirstName", user.FirstName);
                     sqlCMD.Parameters.AddWithValue("LastName", user.LastName);
                     sqlCMD.Parameters.AddWithValue("Banned", user.Banned);
+                    sqlCMD.Parameters.AddWithValue("Salt", user.Salt);
 
                     sqlCon.Open();
                     sqlCMD.ExecuteNonQuery();
@@ -167,6 +168,7 @@ namespace KH_Capstone_DAL
                     sqlCMD.Parameters.AddWithValue("LastName", user.LastName);
                     sqlCMD.Parameters.AddWithValue("Banned", user.Banned);
                     sqlCMD.Parameters.AddWithValue("Inactive", user.Inactive);
+                    sqlCMD.Parameters.AddWithValue("Salt", user.Salt);
 
                     sqlCon.Open();
                     sqlCMD.ExecuteNonQuery();

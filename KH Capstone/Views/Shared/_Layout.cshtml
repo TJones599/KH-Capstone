@@ -130,7 +130,9 @@
                                     <li>
                                         @if (Session["RoleName"].ToString() != "Admin")
                                         {
-                                            @Html.ActionLink(" " + Session["UserName"].ToString(), "AccountView", "Account", new { }, new { @class = "glyphicon glyphicon-user" })
+                                        <span class="glyphicon glyphicon-user">
+                                            @Html.ActionLink(" " + Session["UserName"].ToString(), "AccountView", "Account")
+                                        </span>
 
                                         }
                                         else

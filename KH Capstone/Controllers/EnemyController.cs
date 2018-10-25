@@ -386,7 +386,6 @@ namespace KH_Capstone.Controllers
                 //log any encountered sql exceptions
                 if (!sqlEx.Data.Contains("Logged") || (bool)sqlEx.Data["Logged"] == false)
                 {
-                    //ToDo:add dropdown alert
                     Logger.LogSqlException(sqlEx);
                 }
             }
