@@ -45,7 +45,7 @@ namespace KH_Capstone_DAL
                     sqlEx.Data["Logged"] = true;
                     throw sqlEx;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Logger.LogException(ex);
                     ex.Data["Logged"] = true;
@@ -82,7 +82,7 @@ namespace KH_Capstone_DAL
                     sqlEx.Data["Logged"] = true;
                     throw sqlEx;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Logger.LogException(ex);
                     ex.Data["Logged"] = true;
@@ -90,6 +90,44 @@ namespace KH_Capstone_DAL
                 }
             }
             return items;
+        }
+
+        public ItemDO ViewItemByName(string itemName)
+        {
+            ItemDO item = new ItemDO();
+
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                using (SqlCommand ViewByName = new SqlCommand("ITEM_PULL_BY_NAME", sqlConnection))
+                {
+                    ViewByName.CommandType = System.Data.CommandType.StoredProcedure;
+                    ViewByName.Parameters.AddWithValue("Name", itemName);
+
+                    sqlConnection.Open();
+                    using (SqlDataReader reader = ViewByName.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            item = Mapper.MapSingleItem(reader);
+                        }
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Logger.LogSqlException(sqlEx);
+                sqlEx.Data["Logged"] = true;
+                throw sqlEx;
+            }
+            catch(Exception ex)
+            {
+                Logger.LogException(ex);
+                ex.Data["Logged"] = true;
+                throw ex;
+            }
+
+            return item;
         }
 
         public void UpdateItem(ItemDO item)

@@ -38,7 +38,6 @@ namespace KH_Capstone_BLLs
             return mostCommonID;
         }
 
-
         public static int LeastCommonID(List<int> idList)
         {
             int leastCommonID = 0;

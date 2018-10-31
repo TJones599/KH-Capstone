@@ -39,7 +39,7 @@ namespace KH_Capstone.Controllers
 
                 int mostCommonID;
                 int leastCommonID;
-                List<EnemyItemDetailsDO> fullLinkList = linkDAO.ViewAllLinks();
+                List<EnemyItemDO> fullLinkList = linkDAO.ViewAllLinks();
                 List<int> itemIdList = new List<int>();
                 itemIdList = Mapper.BLLMapper.LinkListToItemIdList(fullLinkList);
 

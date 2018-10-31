@@ -8,23 +8,44 @@
 
 @using (Html.BeginForm("CreateItem", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.LabelFor(model => Model.Item.Name)
-    <div>
-        @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Item.Name, "", new { @style = "color:red;" })
-    </div>
-    @Html.LabelFor(model => Model.Item.Description)
-    <div>
-        @Html.TextBoxFor(model => Model.Item.Description, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Item.Description, "", new { @style = "color:red;" })
+
+    <div class="row">
+        <div class="col-sm-5">
+            @Html.LabelFor(model => Model.Item.Name)
+            <div>
+                @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => Model.Item.Name, "", new { @class="text-danger" })
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-xs-6" style="margin-left:0px;">
+                    @Html.LabelFor(model => Model.Item.Purchasable, new { @class = "control-label col-md-2" })
+                </div>
+                <div class="col-xs-1">
+                    @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "height: 27px; width: 27px;" })
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-push-2"></div>
+        <div class="col-sm-5">
+            @Html.LabelFor(model => Model.Item.Description)
+            <div>
+                @Html.TextBoxFor(model => Model.Item.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => Model.Item.Description, "", new { @class = "text-danger" })
+                <br />
+            </div>
+            @Html.TextBoxFor(model => Model.File, new { type = "file" })
+            <br />
+        </div>
     </div>
 
-    @Html.LabelFor(model => Model.Item.Purchasable)
-    <div>
-        @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "height: 27px; width: 27px;" })
-    </div>
-    @Html.TextBoxFor(model => Model.File, new { type = "file" })
-    <br />
+
+
+
+
+
+
     <input type="submit" value="Create" class="btn btn-success" />
 }
 

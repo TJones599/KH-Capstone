@@ -1,8 +1,27 @@
+***********
+
+October 29, 09:43 AM
+
+Could not find a part of the path '~/Images/Items/Philosipher Stone.png'.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at System.IO.File.Copy(String sourceFileName, String destFileName)
+   at KH_Capstone.Controllers.ItemController.CreateItem(ItemVM form) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\ItemController.cs:line 138
+
+****************
+
+October 29, 2018, 10:28 AM
+
+Object reference not set to an instance of an object.
+
+   at KH_Capstone.Controllers.AccountController.AccountView() in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\AccountController.cs:line 78
+
 ******************
 
-October 25, 2018, 02:49 PM
+October 29, 2018, 10:31 AM
 
-Procedure or function 'USER_UPDATE' expects parameter '@Salt', which was not supplied.
+Procedure or function USER_ACCOUNT_STATUS has too many arguments specified.
 
 ADMIN2-PC\SQLEXPRESS
 
@@ -15,13 +34,13 @@ ADMIN2-PC\SQLEXPRESS
    at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
    at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
    at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
-   at KH_Capstone_DAL.UserDAO.UpdateUser(UserDO user) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\UserDAO.cs:line 126
+   at KH_Capstone_DAL.UserDAO.AccountStatus(Int32 id, Int32 accountStatus) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\UserDAO.cs:line 168
 
 ******************
 
-October 25, 2018, 02:52 PM
+October 29, 2018, 10:32 AM
 
-Procedure or function 'USER_UPDATE' expects parameter '@Salt', which was not supplied.
+Procedure or function USER_ACCOUNT_STATUS has too many arguments specified.
 
 ADMIN2-PC\SQLEXPRESS
 
@@ -34,24 +53,73 @@ ADMIN2-PC\SQLEXPRESS
    at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
    at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
    at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
-   at KH_Capstone_DAL.UserDAO.UpdateUser(UserDO user) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\UserDAO.cs:line 126
+   at KH_Capstone_DAL.UserDAO.AccountStatus(Int32 id, Int32 accountStatus) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\UserDAO.cs:line 168
 
-******************
+****************
 
-October 25, 2018, 04:12 PM
+October 31, 2018, 02:00 PM
 
-Implicit conversion from data type nvarchar to varbinary(max) is not allowed. Use the CONVERT function to run this query.
+Object reference not set to an instance of an object.
 
-ADMIN2-PC\SQLEXPRESS
+   at KH_Capstone.Controllers.EnemyController.NewEnemy() in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\EnemyController.cs:line 93
 
-   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
-   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
-   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
-   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
-   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
-   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
-   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
-   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
-   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
-   at KH_Capstone_DAL.UserDAO.UpdateUser(UserDO user) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\UserDAO.cs:line 126
+****************
+
+October 31, 2018, 02:04 PM
+
+Object reference not set to an instance of an object.
+
+   at KH_Capstone.Controllers.EnemyController.NewEnemy() in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\EnemyController.cs:line 93
+
+****************
+
+October 31, 2018, 02:29 PM
+
+The file 'C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Images\Items\Test.png' already exists.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at System.IO.File.Copy(String sourceFileName, String destFileName)
+   at KH_Capstone.Controllers.ItemController.CreateItem(ItemVM form) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\ItemController.cs:line 138
+
+****************
+
+October 31, 2018, 02:30 PM
+
+The file 'C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Images\Items\test.png' already exists.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at System.IO.File.Copy(String sourceFileName, String destFileName)
+   at KH_Capstone.Controllers.ItemController.CreateItem(ItemVM form) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\ItemController.cs:line 138
+
+****************
+
+October 31, 2018, 02:31 PM
+
+The file 'C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Images\Items\test.png' already exists.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at System.IO.File.Copy(String sourceFileName, String destFileName)
+   at KH_Capstone.Controllers.ItemController.CreateItem(ItemVM form) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\ItemController.cs:line 138
+
+****************
+
+October 31, 2018, 02:31 PM
+
+The file 'C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Images\Items\test.png' already exists.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.File.InternalCopy(String sourceFileName, String destFileName, Boolean overwrite, Boolean checkHost)
+   at System.IO.File.Copy(String sourceFileName, String destFileName)
+   at KH_Capstone.Controllers.ItemController.CreateItem(ItemVM form) in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\ItemController.cs:line 138
+
+****************
+
+October 31, 2018, 02:47 PM
+
+Object reference not set to an instance of an object.
+
+   at KH_Capstone.Controllers.EnemyController.NewEnemy() in C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH Capstone\Controllers\EnemyController.cs:line 93
 

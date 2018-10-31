@@ -10,36 +10,66 @@
 {
     @Html.HiddenFor(model => Model.Item.ItemID)
     @Html.HiddenFor(model => Model.Item.ImagePath)
-    <div>
-        <img src="@Url.Content(Model.Item.ImagePath)" alt="@Model.Item.Name" height="150" width="150"/>
-    </div>
 
-    @Html.LabelFor(model => Model.Item.Name)
-    <div>
-        @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
-    </div>
-    <br />
+    <div class="row">
+        <div class="col-sm-1" style="margin-right:35px;">
+            <div>
+                <img src="@Url.Content(Model.Item.ImagePath)" alt="@Model.Item.Name" height="150" width="150" />
+            </div>
 
-    @Html.LabelFor(model => Model.Item.Description)
-    <div>
-        @Html.TextBoxFor(model => Model.Item.Description, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-4" style="margin-right:22px;">
+            @Html.LabelFor(model => Model.Item.Name)
+            <div>
+                @Html.TextBoxFor(model => Model.Item.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => Model.Item.Name, "", new {@class="text-danger" })
+            </div>
+            <br />
+            <br />
+            @Html.TextBoxFor(model => Model.File, new { type = "file" })
+            <br />
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5">
+            @Html.LabelFor(model => Model.Item.Description)
+            <div>
+                @Html.TextAreaFor(model => Model.Item.Description, new { @class = "form-control", style = "max-width:280px; min-width:280px; width:280px; max-height:110px; min-height:110px; height:110px;" })
+                @Html.ValidationMessageFor(model => Model.Item.Description, "", new { @class = "text-danger" })
+            </div>
+            <br />
+        </div>
     </div>
-    <br />
-    @Html.TextBoxFor(model => Model.File, new { type = "file" })
-    <br />
+    <div class="row">
+        <div class="col-sm-5">
 
-    @Html.LabelFor(model => Model.Item.Purchasable, new { @class = "control-label col-md-2" })
-    <div>
-        @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Item.Purchasable, "", new { @style = "color:red" })
+            <div class="row">
+                <div class="col-xs-6">
+                    @Html.LabelFor(model => Model.Item.Purchasable, new { @class = "control-label col-md-2" })
+                </div>
+                <div class="col-xs-1">
+                    <div>
+                        @Html.CheckBoxFor(model => Model.Item.Purchasable, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => Model.Item.Purchasable, "", new { @style = "color:red" })
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5 col-sm-push-2">
+            <div class="row">
+                <div class="col-xs-6">
+                    @Html.LabelFor(model => Model.Item.Validated, new { @class = "control-label col-md-2" })
+                </div>
+                <div class="col-xs-1">
+                    <div>
+                        @Html.CheckBoxFor(model => Model.Item.Validated, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
     </div>
-
-    @Html.LabelFor(model => Model.Item.Validated, new { @class = "control-label col-md-2" })
-    <div>
-        @Html.CheckBoxFor(model => Model.Item.Validated, new { @style = "heigh:18px; width:18px;", @class = "form-control" })
-        @Html.ValidationMessageFor(model => Model.Item.Validated, "", new { @style = "color:red" })
-    </div>
-    <br />
 
     <input type="submit" value="Update" class="btn btn-success" />
 }

@@ -25,13 +25,5 @@ namespace KH_Capstone.Custom
 
             base.OnActionExecuted(filterContext);
         }
-
-
-
-
-
-
-
-
     }
 }

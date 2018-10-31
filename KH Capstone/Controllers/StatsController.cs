@@ -37,7 +37,7 @@ namespace KH_Capstone.Controllers
         public JsonResult GetItemData()
         {
             //pullingg linkList from db
-            List<EnemyItemDetailsDO> list = linkDAO.ViewAllLinks();
+            List<EnemyItemDO> list = linkDAO.ViewAllLinks();
             //stripping itemID's off of the list and storing them in a list
             List<int> idList = Mapper.BLLMapper.LinkListToItemIdList(list);
 

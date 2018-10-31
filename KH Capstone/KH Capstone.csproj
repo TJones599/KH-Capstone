@@ -152,6 +152,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\StatsController.cs" />
+    <Compile Include="Custom\AjaxOnly.cs" />
     <Compile Include="Custom\SecurityFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -170,7 +171,9 @@
     <Compile Include="Models\ItemPO.cs" />
     <Compile Include="Models\ItemVM.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\RegisterVM.cs" />
     <Compile Include="Models\RolePO.cs" />
+    <Compile Include="Models\UpdatePasswordVM.cs" />
     <Compile Include="Models\UserPO.cs" />
     <Compile Include="Models\UserUpdateVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

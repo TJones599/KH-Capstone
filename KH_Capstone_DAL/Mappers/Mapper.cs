@@ -5,6 +5,7 @@ namespace KH_Capstone_DAL.Mappers
 {
     public class Mapper
     {
+        //mapper to map a single enemys data from the server to an EnemyDO object
         public static EnemyDO MapSingleEnemy(SqlDataReader from)
         {
             EnemyDO to = new EnemyDO();
@@ -19,6 +20,7 @@ namespace KH_Capstone_DAL.Mappers
             return to;
         }
 
+        //mapper to map a single users data from the server to an UserDO object
         public static UserDO MapSingleUser(SqlDataReader from)
         {
             UserDO user = new UserDO();
@@ -37,6 +39,7 @@ namespace KH_Capstone_DAL.Mappers
             return user;
         }
 
+        //mapper to map a single itemms data from the server to an ItemDO object
         public static ItemDO MapSingleItem(SqlDataReader from)
         {
             ItemDO to = new ItemDO();
@@ -51,9 +54,12 @@ namespace KH_Capstone_DAL.Mappers
             return to;
         }
 
-        public static EnemyItemDetailsDO MapSingleEnemyLink(SqlDataReader from)
+        //mapper to map a single EnemyItem link form the server to an EnemyItemDO object
+        //this item shows what items an enemy drops. 
+        //stores the EnemyID, the ItemID, and the ID of the link in the database
+        public static EnemyItemDO MapSingleEnemyLink(SqlDataReader from)
         {
-            EnemyItemDetailsDO to = new EnemyItemDetailsDO();
+            EnemyItemDO to = new EnemyItemDO();
             to.LinkID = (int)from["ID"];
             to.EnemyID = (int)from["EnemyID"];
             to.ItemID = (int)from["ItemID"];
@@ -61,6 +67,7 @@ namespace KH_Capstone_DAL.Mappers
             return to;
         }
         
+        //mapper to map a single roles data from the server to a RoleDO object
         public static RoleDO MapSingleRole(SqlDataReader from)
         {
             RoleDO to = new RoleDO();

@@ -1,15 +1,15 @@
-﻿using KH_Capstone.LoggerPL;
+﻿using KH_Capstone.Custom;
+using KH_Capstone.LoggerPL;
 using KH_Capstone.Models;
+using KH_Capstone_BLL;
 using KH_Capstone_DAL;
 using KH_Capstone_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web.Mvc;
-using KH_Capstone.Custom;
-using System;
-using KH_Capstone_BLL;
 
 namespace KH_Capstone.Controllers
 {
@@ -159,18 +159,18 @@ namespace KH_Capstone.Controllers
         {
             ActionResult response;
 
-            //FirstName and LastName are optional, however cannot be null. This sets them to an empty string if they are null
-            if (form.User.FirstName == null)
-            {
-                form.User.FirstName = "";
-            }
-            if (form.User.LastName == null)
-            {
-                form.User.LastName = "";
-            }
-
             if (ModelState.IsValid)
             {
+                //FirstName and LastName are optional, however cannot be null. This sets them to an empty string if they are null
+                if (form.User.FirstName == null)
+                {
+                    form.User.FirstName = "";
+                }
+                if (form.User.LastName == null)
+                {
+                    form.User.LastName = "";
+                }
+
                 //try to connect to the server, and update users information
                 try
                 {
@@ -228,6 +228,52 @@ namespace KH_Capstone.Controllers
             {
                 UserDO user = _UserDAO.ViewSingleUser(id);
                 _UserDAO.DeleteUser(id);
+
+                //if User deleted is currently logged in, abandon session
+                if (Session["UserName"].ToString() == user.UserName)
+                {
+                    Session.Abandon();
+                }
+            }
+            //catch and log any sqlExceptions encountered during the db call
+            catch (SqlException sqlEx)
+            {
+                if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
+                {
+                    Logger.LogSqlException(sqlEx);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                {
+                    Logger.LogException(ex);
+                }
+            }
+
+            //Redirects based on Role, Admins are redirected to the view all users page, 
+            //otherwise user is redirected to home page
+            if (Session["RoleName"].ToString() == "Admin")
+            {
+                response = RedirectToAction("Index", "Account");
+            }
+            else
+            {
+                response = RedirectToAction("Index", "Home");
+            }
+            return response;
+        }
+
+        [HttpGet]
+        [SecurityFilter(1)]
+        public ActionResult UpdateAccountStatus(int id, int statusUpdate)
+        {
+            ActionResult response = new ViewResult();
+            //try to connect to the server and delete the supplied UserID
+            try
+            {
+                UserDO user = _UserDAO.ViewSingleUser(id);
+                _UserDAO.AccountStatus(id, statusUpdate);
 
                 //if User deleted is currently logged in, abandon session
                 if (Session["UserName"].ToString() == user.UserName)
@@ -359,6 +405,7 @@ namespace KH_Capstone.Controllers
             else
             {
                 //returning to view if modelstate invalid
+                ModelState.AddModelError("Password", "Username or Password is incorrect!");
                 response = View(form);
             }
             return response;
@@ -392,41 +439,45 @@ namespace KH_Capstone.Controllers
         /// <param name="form">UserPO</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Register(UserPO form)
+        public ActionResult Register(RegisterVM form)
         {
             ActionResult response;
             //tests to see if form was fully filled out
             if (ModelState.IsValid)
             {
+                UserDO userDO = _UserDAO.ViewByUserName(form.UserName);
                 //try to connect to the server and create a new user
-                try
+                if (userDO.UserId == 0)
                 {
-                    //if newpassword and passwordConfirmation match, set password = newpassword. otherwise return to view, passing back 
-                    //the entered form and an error message.
-                    if (form.NewPassword == form.PasswordConfirmation)
+                    try
                     {
-                        //ToDo: Hash password
-                        form.Salt = Hashing.CreateSalt(10);
-                        form.Password = Hashing.GenerateSHA256Hash(form.NewPassword, form.Salt);
+                        UserPO user = new UserPO();
+                        //if newpassword and passwordConfirmation match, set password = newpassword. otherwise return to view, passing back 
+                        //the entered form and an error message.
+                        user.Salt = Hashing.CreateSalt(10);
+                        user.Password = Hashing.GenerateSHA256Hash(form.NewPassword, user.Salt);
 
+                        user.FirstName = form.FirstName;
+                        user.LastName = form.LastName;
                         //FirstName and LastName are optional cannot be null. Sets them to empty string if null
-                        if (form.FirstName == null)
+                        if (user.FirstName == null)
                         {
-                            form.FirstName = "";
+                            user.FirstName = "";
                         }
-                        if (form.LastName == null)
+                        if (user.LastName == null)
                         {
-                            form.LastName = "";
+                            user.LastName = "";
                         }
 
                         //setting default values for Role, Banned and RoleName.
-                        form.Role = 1;
-                        form.Banned = false;
-                        form.RoleName = "User";
-                        form.Inactive = false;
+                        user.Role = 1;
+                        user.Banned = false;
+                        user.RoleName = "User";
+                        user.Inactive = false;
+                        user.UserName = form.UserName;
 
                         //mapping to UserDO and creating new user in the db
-                        UserDO newUser = Mapper.Mapper.UserPOtoDO(form);
+                        UserDO newUser = Mapper.Mapper.UserPOtoDO(user);
                         _UserDAO.CreateNewUser(newUser);
 
                         //Automaticly logging newly registered user in, setting all Session information needed
@@ -439,35 +490,36 @@ namespace KH_Capstone.Controllers
 
                         //setting response to return to home page
                         response = RedirectToAction("Index", "Home");
+
                     }
-                    else
+                    //Catch and log any sqlExceptions encountered during DB call
+                    catch (SqlException sqlEx)
                     {
-                        //setting response to return to view, passing back the bad form and error message
-                        ModelState.AddModelError("Password", "Passwords did not match");
-                        response = View(form);
+                        if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
+                        {
+                            Logger.LogSqlException(sqlEx);
+                        }
+                        response = RedirectToAction("Index", "Home");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                        {
+                            Logger.LogException(ex);
+                        }
+                        response = RedirectToAction("Index", "Home");
                     }
                 }
-                //Catch and log any sqlExceptions encountered during DB call
-                catch (SqlException sqlEx)
+                else
                 {
-                    if (!((bool)sqlEx.Data["Logged"] == true) || !sqlEx.Data.Contains("Logged"))
-                    {
-                        Logger.LogSqlException(sqlEx);
-                    }
-                    response = RedirectToAction("Index", "Home");
+                    ModelState.AddModelError("UserName", "UserName already exists!");
+                    response = View(form);
                 }
-                catch (Exception ex)
-                {
-                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
-                    {
-                        Logger.LogException(ex);
-                    }
-                    response = RedirectToAction("Index", "Home");
-                }
+
             }
             else
             {
-                ModelState.AddModelError("", "Missing information, please fill out all fields.");
+                ModelState.AddModelError("PasswordConfirmation", "Missing information, please fill out all fields.");
                 response = View(form);
             }
 
@@ -475,81 +527,68 @@ namespace KH_Capstone.Controllers
         }
 
         [HttpGet]
+        [SecurityFilter(1)]
         public ActionResult UpdatePassword(int id)
         {
-            ActionResult response = new ViewResult();
-            try
-            {
-                UserPO user = Mapper.Mapper.UserDOtoPO(_UserDAO.ViewSingleUser(id));
-                response = View(user);
-            }
-            catch (SqlException sqlEx)
-            {
-
-                if (sqlEx.Data.Contains("Logged"))
-                {
-                    if ((bool)sqlEx.Data["Logged"] == false)
-                    {
-                        Logger.LogSqlException(sqlEx);
-                    }
-                }
-                response = RedirectToAction("Index", "Home");
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
-                {
-                    Logger.LogException(ex);
-                }
-                response = RedirectToAction("Index", "Home");
-            }
-
-            return response;
+            return View();
         }
 
         [HttpPost]
-        public ActionResult UpdatePassword(UserPO form)
+        [SecurityFilter(1)]
+        public ActionResult UpdatePassword(UpdatePasswordVM form)
         {
             ActionResult response = new ViewResult();
-
-            byte[] oldPassword = Hashing.GenerateSHA256Hash(form.OldPassword, form.Salt);
-            bool passwordsMatch = Hashing.CompareByteArray(oldPassword, form.Password);
-
-            if (passwordsMatch)
+            if (ModelState.IsValid)
             {
-                if (form.NewPassword == form.PasswordConfirmation)
-                {
-                    form.Salt = Hashing.CreateSalt(10);
-                    form.Password = Hashing.GenerateSHA256Hash(form.NewPassword, form.Salt);
-                }
+                UserPO user = Mapper.Mapper.UserDOtoPO(_UserDAO.ViewByUserName(Session["UserName"].ToString()));
 
-                try
+                byte[] oldPassword = Hashing.GenerateSHA256Hash(form.OldPassword, user.Salt);
+                bool passwordsMatch = Hashing.CompareByteArray(oldPassword, user.Password);
+
+                if (passwordsMatch)
                 {
-                    UserDO user = Mapper.Mapper.UserPOtoDO(form);
-                    _UserDAO.UpdateUser(user);
-                    response = RedirectToAction("AccountView", "Account");
-                }
-                catch (SqlException sqlEx)
-                {
-                    if (sqlEx.Data.Contains("Logged"))
+
+                    if (form.NewPassword == form.PasswordConfirmation)
                     {
-                        if ((bool)sqlEx.Data["Logged"] == false)
+                        user.Salt = Hashing.CreateSalt(10);
+                        user.Password = Hashing.GenerateSHA256Hash(form.NewPassword, user.Salt);
+                    }
+
+                    try
+                    {
+                        UserDO userDO = Mapper.Mapper.UserPOtoDO(user);
+                        _UserDAO.UpdateUser(userDO);
+                        response = RedirectToAction("AccountView", "Account");
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        if (sqlEx.Data.Contains("Logged"))
                         {
-                            Logger.LogSqlException(sqlEx);
+                            if ((bool)sqlEx.Data["Logged"] == false)
+                            {
+                                Logger.LogSqlException(sqlEx);
+                            }
                         }
+                        response = View(form);
                     }
-                    response = View(form);
-                }
-                catch (Exception ex)
-                {
-                    if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                    catch (Exception ex)
                     {
-                        Logger.LogException(ex);
+                        if (!ex.Data.Contains("Logged") || (bool)ex.Data["Logged"] == false)
+                        {
+                            Logger.LogException(ex);
+                        }
+                        response = View(form);
                     }
-                    response = View(form);
+
                 }
+            }
+            else
+            {
+                ModelState.AddModelError("PasswordConfirmation", "Invalid entry. Please check your entries and try again.");
+                return View(form);
             }
             return response;
         }
+
     }
 }

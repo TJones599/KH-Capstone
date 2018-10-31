@@ -24,7 +24,7 @@
                         Role
                     </th>
                     <th>
-                        Banned
+                        Status
                     </th>
                     <th colspan="2">
                         Actions
@@ -34,8 +34,8 @@
             <tbody>
                 @foreach (UserPO user in Model)
                 {
-                    if (!user.Inactive)
-                    {
+                    //if (!user.Inactive)
+                    //{
                         <tr>
                             <td>
                                 @user.UserName
@@ -49,31 +49,35 @@
                             <td>
                                 @user.RoleName
                             </td>
-                            <td>
+                            <td style=" text-align:center;">
                                 @if (user.Banned)
                                 {
-                                    <text>True</text>
+                                    <span style="color:red;">Banned</span>
+                                }
+                                else if(user.Inactive)
+                                {
+                                    <span style="color:black;">Inactive</span>
                                 }
                                 else
                                 {
-                                    <text>False</text>
+                                    <span style="color:wheat;">Active</span>
                                 }
 
                             </td>
                             <td>
-                                @if ((int)Session["Role"] > user.Role)
+                                @if ((int)Session["Role"] > user.Role && !user.Inactive)
                                 {
                                     @Html.ActionLink("Update", "UpdateUser", "Account", new { id = user.UserID }, new { @class = "btn btn-primary" })
                                 }
                             </td>
                             <td>
-                                @if (Session["RoleName"].ToString() == "Admin" && user.Role != (int)Session["Role"])
+                                @if (Session["RoleName"].ToString() == "Admin" && user.Role != (int)Session["Role"] && !user.Inactive)
                                 {
-                                    @Html.ActionLink("Delete", "DeleteUser", "Account", new { id = user.UserID }, new { @class = "btn btn-danger" })
+                                    @Html.ActionLink("Deactivate", "UpdateAccountStatus", "Account", new { id = user.UserID, statusUpdate = 1 }, new { @class = "btn btn-danger" })
                                 }
                             </td>
                         </tr>
-                    }
+                    @*}*@
                 }
             </tbody>
         </table>

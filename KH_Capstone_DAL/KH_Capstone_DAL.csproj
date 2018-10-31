@@ -47,7 +47,7 @@
     <Compile Include="LoggerDAO\Logger.cs" />
     <Compile Include="Mappers\Mapper.cs" />
     <Compile Include="Models\EnemyDO.cs" />
-    <Compile Include="Models\EnemyItemDetailsDO.cs" />
+    <Compile Include="Models\EnemyItemDO.cs" />
     <Compile Include="Models\ItemDO.cs" />
     <Compile Include="Models\RoleDO.cs" />
     <Compile Include="Models\UserDO.cs" />

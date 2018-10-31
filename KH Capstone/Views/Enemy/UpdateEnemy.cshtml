@@ -6,50 +6,64 @@
 
 <h2>Update @Model.Enemy.Name</h2>
 
-<img src="@Url.Content(Model.Enemy.ImagePath)" alt="@Model.Enemy.Name" height="150" width="150" />
 
 @using (Html.BeginForm("UpdateEnemy", "Enemy", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(model => Model.Enemy.EnemyID)
     @Html.HiddenFor(model => Model.Enemy.ImagePath)
 
-    @Html.LabelFor(model => Model.Enemy.Name)
-    <div>
-        @Html.TextBoxFor(model => Model.Enemy.Name, new { @class = "form-control" })
+    <div class="row">
+        <div class=" col-sm-3">
+            <div class="row" style="margin-left:15px;">
+                <img src="@Url.Content(Model.Enemy.ImagePath)" alt="@Model.Enemy.Name" height="220" width="220" />
+                <br />
+            </div>
+            <div>
+                @Html.LabelFor(model => Model.Enemy.Validated, new { @class = "", style = "margin-left:15px;" })
+                @Html.CheckBoxFor(model => Model.Enemy.Validated, new { @class = "", style = "height:20px; width:20px; margin-left:15px; margin-top:15px;" })
+            </div>
+        </div>
+        <div class="col-sm-4 col-sm-push-1">
+            @Html.LabelFor(model => Model.Enemy.Name)
+            <div>
+                @Html.TextBoxFor(model => Model.Enemy.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => Model.Enemy.Name, "",new { @class="text-danger"})
+            </div>
+            <br />
+
+            @Html.LabelFor(model => Model.Enemy.Location)
+            <div>
+                @Html.TextBoxFor(model => Model.Enemy.Location, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => Model.Enemy.Location, "", new { @class = "text-danger" })
+            </div>
+            <br />
+
+            @Html.LabelFor(model => Model.Enemy.Description)
+            <div>
+                @Html.TextAreaFor(model => Model.Enemy.Description,
+                            new { @class = "form-control",style="max-width:280px; min-width:200px; max-height:75px; min-height:75px; height:75px;" })
+                @Html.ValidationMessageFor(model => Model.Enemy.Description, "", new { @class = "text-danger" })
+            </div>
+            <br />
+        </div>
+        <div class="col-sm-3 col-sm-push-1" style="margin-top:10px;">
+            @Html.LabelFor(model => Model.Item1)
+            <div>
+                @Html.DropDownListFor(model => Model.Item1, new SelectList(Model.itemList, "ItemID", "Name"), new { @style = "background-color:orange; color:black;" })
+            </div>
+            <br />
+
+            @Html.LabelFor(model => Model.Item2)
+            <div>
+                @Html.DropDownListFor(model => Model.Item2, new SelectList(Model.itemList, "ItemID", "Name"), new { @style = "background-color:orange; color:black;" })
+            </div>
+            <br />
+            <div style="margin-top:10px;">
+                <text>Image</text>
+                @Html.TextBoxFor(model => Model.File, new { type = "file" })
+            </div>
+            <br />
+        </div>
     </div>
-
-    @Html.LabelFor(model => Model.Enemy.Location)
-    <div>
-        @Html.TextBoxFor(model => Model.Enemy.Location, new { @class = "form-control" })
-    </div>
-
-    @Html.LabelFor(model => Model.Enemy.Description)
-    <div>
-        @Html.TextBoxFor(model => Model.Enemy.Description, new { @class = "form-control" })
-    </div>
-    
-
-    @Html.LabelFor(model => Model.Item1)
-    <div>
-        @Html.DropDownListFor(model => Model.Item1, new SelectList(Model.itemList, "ItemID", "Name"), new { @style = "background-color:orange; color:black;" })
-    </div>
-
-    @Html.LabelFor(model => Model.Item2)
-    <div>
-        @Html.DropDownListFor(model => Model.Item2, new SelectList(Model.itemList, "ItemID", "Name"), new { @style = "background-color:orange; color:black;" })
-    </div>
-
-    <text>Image</text>
-    @Html.TextBoxFor(model => Model.File, new { type = "file" })
-
-
-    @Html.LabelFor(model => Model.Enemy.Validated)
-    <div>
-        @Html.CheckBoxFor(model => Model.Enemy.Validated, new { @class = "form-control" })
-    </div>
-
-
-    <br />
-
-    <input type="submit" value="Submit" class="btn btn-primary" />
+    <input type="submit" value="Submit" class="btn btn-primary" style="margin-left:15px;"/>
 }

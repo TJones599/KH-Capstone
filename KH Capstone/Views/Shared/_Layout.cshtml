@@ -14,13 +14,11 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="glyphicon glyphicon-triangle-bottom"></span>
                 </button>
-                @Html.ActionLink("Kingdom Hearts", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink(" ", "Index", "Home", new { area = "" }, new { @class = "glyphicon glyphicon-home", style="margin-top:12px;" })
+                @Html.ActionLink(" Kingdom Hearts", "Index", "Home", new { area = "" }, new { @class = "homepageLink ", style = "margin-top:12px;" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>
-                        @Html.ActionLink(" ", "Index", "Home", new { }, new { @class = "glyphicon glyphicon-home" })
-                    </li>
                     <li>
                         @Html.ActionLink("Stats", "Index", "Stats", new { }, new { @class = "nvButton btn" })
                     </li>
@@ -130,9 +128,9 @@
                                     <li>
                                         @if (Session["RoleName"].ToString() != "Admin")
                                         {
-                                        <span class="glyphicon glyphicon-user">
-                                            @Html.ActionLink(" " + Session["UserName"].ToString(), "AccountView", "Account")
-                                        </span>
+                                            <span class="glyphicon glyphicon-user">
+                                                @Html.ActionLink(" " + Session["UserName"].ToString(), "AccountView", "Account")
+                                            </span>
 
                                         }
                                         else
@@ -168,9 +166,6 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div>
-        <br />
     </div>
     <div class="container body-content">
         @RenderBody()

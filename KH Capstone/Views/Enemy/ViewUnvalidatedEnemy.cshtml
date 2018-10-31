@@ -23,7 +23,7 @@
                     </td>
                     @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Mod" || Session["RoleName"].ToString() == "Admin"))
                     {
-                        <td>
+                        <td style="text-align:right;">
                             @Html.ActionLink("Update", "UpdateEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-success" })
                         </td>
                     }
@@ -32,19 +32,22 @@
                     @if (!(Session["RoleName"] is null) && (Session["RoleName"].ToString() == "Admin"))
                     {
                         <td colspan="2">
+                            <text style="color:black;">Description: </text>
                             @enemy.Description
                         </td>
-                        <td>
+                        <td style="text-align:right;">
                             @Html.ActionLink("Delete", "DeleteEnemy", "Enemy", new { id = enemy.EnemyID }, new { @class = "btn btn-danger", onclick = "return confirm('Are you sure you wish to delete this enemy?');" })
                         </td>
                     }
                     else
                     {
                         <td colspan="3">
+                            <text style="color:black;">Description: </text>
                             @enemy.Description
                         </td>
                     }
                 </tr>
+                <tr><td colspan="4" style="background-color:darkslategray"></td></tr>
             }
         }
     </tbody>

@@ -15,6 +15,12 @@
     </div>
 </div>
 <br />
+<div class="row">
+    <div class="col-md-6 col-md-push-3">
+        <canvas id="itemLine"></canvas>
+    </div>
+</div>
+<br />
 <br />
 
 <h1 class="hidden-xs" style="text-align:center;">World Statistics</h1>
@@ -24,6 +30,13 @@
     </div>
     <div class="col-md-6 hidden-xs" style="margin-top:10px">
         <canvas id="locationPie"></canvas>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="col-md-6 col-md-push-3">
+        <canvas id="locationLine"></canvas>
     </div>
 </div>
 
@@ -36,8 +49,10 @@
 <script>
     CreateChart('/Stats/GetItemData', 'bar', '#itemBar', 'Item Drop Frequency', 'Number of enemies that drop the item')
     CreateChart('/Stats/GetItemData', 'pie', '#itemPie', 'Item Drop Frequency', '')
+    CreateChart('/Stats/GetItemData', 'line', '#itemLine', 'Item Drop Frequency', '')
     CreateChart('/Stats/GetEnemyData', 'bar', '#locationBar', 'Enemies per World', '')
     CreateChart('/Stats/GetEnemyData', 'pie', '#locationPie', 'Enemies per World', '')
+    CreateChart('/Stats/GetEnemyData', 'line', '#locationLine', 'Enemies per World', '')
 
     function CreateChart(dataUrl, chartType, chartTarget, chartTitle, barTitle) {
         $.ajax({

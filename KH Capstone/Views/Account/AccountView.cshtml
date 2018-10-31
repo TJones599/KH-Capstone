@@ -29,7 +29,7 @@
     <span style="padding-left: 50px">
 
     </span>
-    @Html.ActionLink("Delete Account", "DeleteUser", "Account", new { id = Model.UserID }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Deactivate Account", "UpdateAccountStatus", "Account", new { id = Model.UserID, statusUpdate=1 }, new { @class = "btn btn-danger" })
 
 }
 

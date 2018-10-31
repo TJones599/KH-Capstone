@@ -18,7 +18,7 @@ namespace KH_Capstone_BLL
 
             Random rnd = new Random();
 
-            for(int i = 0;i < size; i ++)
+            for (int i = 0; i < size; i++)
             {
                 buff[i] = characters[rnd.Next(characters.Length)];
             }
@@ -40,19 +40,19 @@ namespace KH_Capstone_BLL
         {
             bool same = true;
 
-            if(arr1.Length!=arr2.Length)
+            if (arr1.Length != arr2.Length)
             {
                 same = false;
             }
             else
             {
-            for(int i = 0; i < arr1.Length; i++)
-            {
-                    if(arr1[i]!=arr2[i])
+                for (int i = 0; i < arr1.Length; i++)
+                {
+                    if (arr1[i] != arr2[i])
                     {
                         same = false;
                     }
-            }
+                }
             }
 
             return same;

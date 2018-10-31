@@ -17,13 +17,13 @@
     @Html.HiddenFor(model => Model.User.UserID)
 
 
-    @Html.LabelFor(model => Model.User.FirstName, new { @class = "col-md-4 col-sm-4 control-label" })
+    @Html.LabelFor(model => Model.User.FirstName, new { @class = "col-sm-4 col-xs-4 control-label" })
     <div>
         @Html.TextBoxFor(model => Model.User.FirstName, new { @class = "form-control" })
     </div>
     <br />
 
-    @Html.LabelFor(model => Model.User.LastName, new { @class = "col-md-4 col-sm-4 control-label" })
+    @Html.LabelFor(model => Model.User.LastName, new { @class = "col-sm-4 col-xs-4 control-label" })
     <div>
         @Html.TextBoxFor(model => Model.User.LastName, new { @class = "form-control" })
     </div>
@@ -49,9 +49,9 @@
 
     if (Session["RoleName"].ToString() == "Admin")
     {
-        @Html.LabelFor(model => Model.User.Banned)
         <div>
-            @Html.CheckBoxFor(model => Model.User.Banned, new { style = "height:27px; width:27px;" })
+            @Html.LabelFor(model => Model.User.Banned)
+            @Html.CheckBoxFor(model => Model.User.Banned, new { style = "height:20px; width:20px; margin-left:35px;" })
         </div>
     }
     <br />

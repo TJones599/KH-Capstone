@@ -154,7 +154,7 @@ namespace KH_Capstone.Mapper
         }
 
 
-        public static EnemyItemIDLink DetailsDOtoPO(EnemyItemDetailsDO from)
+        public static EnemyItemIDLink DetailsDOtoPO(EnemyItemDO from)
         {
             EnemyItemIDLink to = new EnemyItemIDLink();
 
@@ -165,10 +165,10 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
-        public static List<EnemyItemIDLink> DetailsDOtoPO(List<EnemyItemDetailsDO> from)
+        public static List<EnemyItemIDLink> DetailsDOtoPO(List<EnemyItemDO> from)
         {
             List<EnemyItemIDLink> to = new List<EnemyItemIDLink>();
-            foreach (EnemyItemDetailsDO enemy in from)
+            foreach (EnemyItemDO enemy in from)
             {
                 EnemyItemIDLink temp = new EnemyItemIDLink();
                 temp.LinkID = enemy.LinkID;
@@ -180,9 +180,9 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
-        public static EnemyItemDetailsDO DetailsPOtoDO(EnemyItemIDLink from)
+        public static EnemyItemDO DetailsPOtoDO(EnemyItemIDLink from)
         {
-            EnemyItemDetailsDO to = new EnemyItemDetailsDO();
+            EnemyItemDO to = new EnemyItemDO();
 
             to.LinkID = from.LinkID;
             to.EnemyID = from.EnemyID;
@@ -191,12 +191,12 @@ namespace KH_Capstone.Mapper
             return to;
         }
 
-        public static List<EnemyItemDetailsDO> DetailsPOtoDO(List<EnemyItemIDLink> from)
+        public static List<EnemyItemDO> DetailsPOtoDO(List<EnemyItemIDLink> from)
         {
-            List<EnemyItemDetailsDO> to = new List<EnemyItemDetailsDO>();
+            List<EnemyItemDO> to = new List<EnemyItemDO>();
             foreach (EnemyItemIDLink enemy in from)
             {
-                EnemyItemDetailsDO temp = new EnemyItemDetailsDO();
+                EnemyItemDO temp = new EnemyItemDO();
                 temp.LinkID = enemy.LinkID;
                 temp.EnemyID = enemy.EnemyID;
                 temp.ItemID = enemy.ItemID;

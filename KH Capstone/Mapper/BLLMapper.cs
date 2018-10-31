@@ -29,11 +29,11 @@ namespace KH_Capstone.Mapper
             return itemIdList;
         }
 
-        public static List<int> LinkListToItemIdList(List<EnemyItemDetailsDO> from)
+        public static List<int> LinkListToItemIdList(List<EnemyItemDO> from)
         {
             List<int> itemIdList = new List<int>();
 
-            foreach(EnemyItemDetailsDO link in from)
+            foreach(EnemyItemDO link in from)
             {
                 int itemId = link.ItemID;
                 itemIdList.Add(itemId);

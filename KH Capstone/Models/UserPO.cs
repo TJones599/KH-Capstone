@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KH_Capstone.Models
 {
@@ -15,20 +11,16 @@ namespace KH_Capstone.Models
         
         public byte[] Password { get; set; }
 
-        public string OldPassword { get; set; }
-
-        public string NewPassword { get; set; }
-
-        public string PasswordConfirmation { get; set; }
-
         public string Salt { get; set; }
 
         public int Role { get; set; }
 
         public string RoleName { get; set; }
 
+        [Display (Name = "First Name")]
         public string FirstName { get; set; }
 
+        [Display (Name = "Last Name")]
         public string LastName { get; set; }
 
         public bool Banned { get; set; }

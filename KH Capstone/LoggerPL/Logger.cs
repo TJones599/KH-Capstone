@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.IO;
+
 namespace KH_Capstone.LoggerPL
 {
-    public class Logger
+    public static class Logger
     {
         public static string logPath;
 
@@ -17,19 +15,21 @@ namespace KH_Capstone.LoggerPL
 
         public static void LogException(Exception ex, string Server = "")
         {
-            StreamWriter sw = new StreamWriter(logPath);
+            StreamWriter sw = new StreamWriter(logPath,true);
 
-            sw.WriteLine("***********");
+            sw.WriteLine("****************");
             sw.WriteLine();
-            sw.WriteLine("{0:MMMM dd, hh:mm tt}", DateTime.Now);
+            sw.WriteLine("{0:MMMM dd, yyyy, hh:mm tt}", DateTime.Now);
             sw.WriteLine();
+            sw.WriteLine(ex.Message);
+            sw.WriteLine();
+
             if(Server != string.Empty)
             {
                 sw.WriteLine(Server);
                 sw.WriteLine();
             }
-            sw.WriteLine(ex.Message);
-            sw.WriteLine();
+
             sw.WriteLine(ex.StackTrace);
             sw.WriteLine();
 

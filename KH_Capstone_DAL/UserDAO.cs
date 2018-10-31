@@ -1,6 +1,7 @@
 ﻿using KH_Capstone_DAL.LoggerDAO;
 using KH_Capstone_DAL.Mappers;
 using KH_Capstone_DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -137,7 +138,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_INACTIVE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USER_DELETE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCMD.Parameters.AddWithValue("UserID", id);
@@ -149,6 +150,29 @@ namespace KH_Capstone_DAL
             catch (SqlException sqlEx)
             {
                 Logger.LogSqlException(sqlEx);
+            }
+        }
+
+        public void AccountStatus(int id, int accountStatus)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            using (SqlCommand UpdateAccountStatus = new SqlCommand("USER_ACCOUNT_STATUS", sqlConnection))
+            {
+                try
+                {
+                    UpdateAccountStatus.CommandType = System.Data.CommandType.StoredProcedure;
+                    UpdateAccountStatus.Parameters.AddWithValue("UserID", id);
+                    UpdateAccountStatus.Parameters.AddWithValue("AccountStatus", accountStatus);
+
+                    sqlConnection.Open();
+                    UpdateAccountStatus.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    Logger.LogSqlException(sqlEx);
+                    sqlEx.Data["Logged"] = true;
+                    throw sqlEx;
+                }
             }
         }
 

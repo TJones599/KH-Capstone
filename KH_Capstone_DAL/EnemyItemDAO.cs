@@ -17,7 +17,7 @@ namespace KH_Capstone_DAL
             Logger.logPath = logPath;
         }
 
-        public void CreateEnemyDetails(EnemyItemDetailsDO enemyDetails)
+        public void CreateEnemyDetails(EnemyItemDO enemyDetails)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace KH_Capstone_DAL
             }
         }
 
-        public void UpdateEnemyLink(EnemyItemDetailsDO enemyLink)
+        public void UpdateEnemyLink(EnemyItemDO enemyLink)
         {
             try
             {
@@ -89,9 +89,9 @@ namespace KH_Capstone_DAL
             }
         }
 
-        public List<EnemyItemDetailsDO> ViewByEnemyID(int id)
+        public List<EnemyItemDO> ViewByEnemyID(int id)
         {
-            List<EnemyItemDetailsDO> enemy = new List<EnemyItemDetailsDO>();
+            List<EnemyItemDO> enemy = new List<EnemyItemDO>();
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -106,7 +106,7 @@ namespace KH_Capstone_DAL
                     {
                         while(reader.Read())
                         {
-                            EnemyItemDetailsDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
+                            EnemyItemDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
                             enemy.Add(temp);
                         }
                     }
@@ -127,9 +127,9 @@ namespace KH_Capstone_DAL
             return enemy;
         }
 
-        public List<EnemyItemDetailsDO> ViewByItemID(int id)
+        public List<EnemyItemDO> ViewByItemID(int id)
         {
-            List<EnemyItemDetailsDO> enemy = new List<EnemyItemDetailsDO>();
+            List<EnemyItemDO> enemy = new List<EnemyItemDO>();
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -144,7 +144,7 @@ namespace KH_Capstone_DAL
                     {
                         while(reader.Read())
                         {
-                            EnemyItemDetailsDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
+                            EnemyItemDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
                             enemy.Add(temp);
                         }
                     }
@@ -165,9 +165,9 @@ namespace KH_Capstone_DAL
             return enemy;
         }
 
-        public List<EnemyItemDetailsDO> ViewAllLinks()
+        public List<EnemyItemDO> ViewAllLinks()
         {
-            List<EnemyItemDetailsDO> fullLinkList = new List<EnemyItemDetailsDO>();
+            List<EnemyItemDO> fullLinkList = new List<EnemyItemDO>();
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
@@ -180,7 +180,7 @@ namespace KH_Capstone_DAL
                     {
                         while (reader.Read())
                         {
-                            EnemyItemDetailsDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
+                            EnemyItemDO temp = Mappers.Mapper.MapSingleEnemyLink(reader);
                             fullLinkList.Add(temp);
                         }
                     }
