@@ -22,7 +22,7 @@ namespace KH_Capstone_DAL
             ItemDO item = new ItemDO();
 
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("ITEM_PULL_SINGLE", sqlCon))
+            using (SqlCommand sqlCMD = new SqlCommand("ITEMS_VIEW_SINGLE", sqlCon))
             {
                 try
                 {
@@ -60,7 +60,7 @@ namespace KH_Capstone_DAL
             List<ItemDO> items = new List<ItemDO>();
 
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            using (SqlCommand sqlCMD = new SqlCommand("ITEM_PULL_ALL", sqlCon))
+            using (SqlCommand sqlCMD = new SqlCommand("ITEMS_VIEW_ALL", sqlCon))
             {
                 try
                 {
@@ -99,7 +99,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand ViewByName = new SqlCommand("ITEM_PULL_BY_NAME", sqlConnection))
+                using (SqlCommand ViewByName = new SqlCommand("ITEMS_VIEW_BY_NAME", sqlConnection))
                 {
                     ViewByName.CommandType = System.Data.CommandType.StoredProcedure;
                     ViewByName.Parameters.AddWithValue("Name", itemName);
@@ -136,7 +136,7 @@ namespace KH_Capstone_DAL
             {
 
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("ITEM_UPDATE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("ITEMS_UPDATE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -164,7 +164,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("ITEM_DELETE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("ITEMS_DELETE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCMD.Parameters.AddWithValue("ItemID", id);
@@ -187,7 +187,7 @@ namespace KH_Capstone_DAL
             {
 
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("ITEM_NEW", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("ITEMS_CREATE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 

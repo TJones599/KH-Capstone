@@ -24,10 +24,10 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_BY_USERNAME", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_VIEW_BY_USERNAME", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
-                    sqlCMD.Parameters.AddWithValue("UserName", UserName);
+                    sqlCMD.Parameters.AddWithValue("name", UserName);
 
                     sqlCon.Open();
 
@@ -54,7 +54,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_SINGLE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_VIEW_SINGLE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCMD.Parameters.AddWithValue("UserID", id);
@@ -83,7 +83,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_PULL_ALL", sqlConnection))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_VIEW_ALL", sqlConnection))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -110,7 +110,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_UPDATE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_UPDATE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -138,7 +138,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_DELETE", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_DELETE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCMD.Parameters.AddWithValue("UserID", id);
@@ -153,10 +153,10 @@ namespace KH_Capstone_DAL
             }
         }
 
-        public void AccountStatus(int id, int accountStatus)
+        public void AccountStatus(int id, bool accountStatus)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-            using (SqlCommand UpdateAccountStatus = new SqlCommand("USER_ACCOUNT_STATUS", sqlConnection))
+            using (SqlCommand UpdateAccountStatus = new SqlCommand("USERS_ACC_STATUS", sqlConnection))
             {
                 try
                 {
@@ -181,12 +181,12 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                using (SqlCommand sqlCMD = new SqlCommand("USER_NEW", sqlCon))
+                using (SqlCommand sqlCMD = new SqlCommand("USERS_CREATE", sqlCon))
                 {
                     sqlCMD.CommandType = System.Data.CommandType.StoredProcedure;
 
                     sqlCMD.Parameters.AddWithValue("UserName", user.UserName);
-                    sqlCMD.Parameters.AddWithValue("Password", user.Password);
+                    sqlCMD.Parameters.AddWithValue("UserPass", user.Password);
                     sqlCMD.Parameters.AddWithValue("Role", user.Role);
                     sqlCMD.Parameters.AddWithValue("FirstName", user.FirstName);
                     sqlCMD.Parameters.AddWithValue("LastName", user.LastName);
@@ -210,7 +210,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand PullAllRoles = new SqlCommand("ROLES_PULL_ALL_ROLEIDS", sqlConnection))
+                using (SqlCommand PullAllRoles = new SqlCommand("ROLES_VIEW_ALL", sqlConnection))
                 {
                     PullAllRoles.CommandType = System.Data.CommandType.StoredProcedure;
 

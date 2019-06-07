@@ -266,7 +266,7 @@ namespace KH_Capstone.Controllers
 
         [HttpGet]
         [SecurityFilter(1)]
-        public ActionResult UpdateAccountStatus(int id, int statusUpdate)
+        public ActionResult UpdateAccountStatus(int id, bool statusUpdate)
         {
             ActionResult response = new ViewResult();
             //try to connect to the server and delete the supplied UserID

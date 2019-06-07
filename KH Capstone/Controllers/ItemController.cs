@@ -43,16 +43,12 @@ namespace KH_Capstone.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            ActionResult response;
-
+            List<ItemPO> itemList = new List<ItemPO>();
             //try to connect to the server and aquire all item information
             try
             {
-                List<ItemPO> itemList = new List<ItemPO>();
                 //mapping to ItemPO collection
                 itemList = Mapper.Mapper.ItemDOListToPO(iDAO.ViewAllItems());
-
-                response = View(itemList);
             }
             //catch and log any sqlExceptions encountered during db call
             catch (SqlException sqlEx)
@@ -62,7 +58,6 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogSqlException(sqlEx);
                 }
-                response = RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
@@ -70,10 +65,9 @@ namespace KH_Capstone.Controllers
                 {
                     Logger.LogException(ex);
                 }
-                response = RedirectToAction("Index", "Home");
             }
 
-            return response;
+            return View(itemList);
         }
 
 
@@ -115,7 +109,7 @@ namespace KH_Capstone.Controllers
 
                         form.Item.ImagePath = "~/Images/Items/" + form.Item.Name + ".png";
 
-                        if(System.IO.File.Exists(Server.MapPath(form.Item.ImagePath)))
+                        if (System.IO.File.Exists(Server.MapPath(form.Item.ImagePath)))
                         {
                             System.IO.File.Delete(Server.MapPath(form.Item.ImagePath));
                         }

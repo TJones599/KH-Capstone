@@ -33,7 +33,7 @@ namespace KH_Capstone_DAL
             {
                 //creating an sqlconnection and sqlcommand to access the database
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand pullSingleEnemy = new SqlCommand("ENEMY_PULL_SINGLE", sqlConnection))
+                using (SqlCommand pullSingleEnemy = new SqlCommand("ENEMIES_VIEW_SINGLE", sqlConnection))
                 {
                     //setting the sqlcommands commandtype to storedprocedure to the server knows that its looking
                     //for a stored procedure and not running the text as a command
@@ -94,7 +94,7 @@ namespace KH_Capstone_DAL
             {
                 //creates a sqlconnection and slqcommand to connect to the server
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand pullAllEnemies = new SqlCommand("ENEMY_PULL_ALL", sqlConnection))
+                using (SqlCommand pullAllEnemies = new SqlCommand("ENEMIES_VIEW_ALL", sqlConnection))
                 {
                     //sets SqlCommands CommandType to stored procedure so the database knows what its looking at
                     pullAllEnemies.CommandType = System.Data.CommandType.StoredProcedure;
@@ -152,7 +152,7 @@ namespace KH_Capstone_DAL
             {
                 //creating a connection and command for our server connection
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand UpdateEnemy = new SqlCommand("ENEMY_UPDATE", sqlConnection))
+                using (SqlCommand UpdateEnemy = new SqlCommand("ENEMIES_UPDATE", sqlConnection))
                 {
                     //setting SqlCommands CommandType to stored procedure so the database knows what its looking for
                     UpdateEnemy.CommandType = System.Data.CommandType.StoredProcedure;
@@ -195,7 +195,7 @@ namespace KH_Capstone_DAL
             {
                 //creating an sqlconnection and sqlcommand for our server connection
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand DeleteEnemy = new SqlCommand("ENEMY_DELETE", sqlConnection))
+                using (SqlCommand DeleteEnemy = new SqlCommand("ENEMIES_DELETE", sqlConnection))
                 {
                     //setting sqlcommands command type to stored procedure to it knows what to look for
                     DeleteEnemy.CommandType = System.Data.CommandType.StoredProcedure;
@@ -230,7 +230,7 @@ namespace KH_Capstone_DAL
             {
                 //creating an sqlConnection and SqlCommand for our server connection
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand createEnemy = new SqlCommand("ENEMY_NEW", sqlConnection))//name change
+                using (SqlCommand createEnemy = new SqlCommand("ENEMIES_CREATE", sqlConnection))//name change
                 {
                     //marking the SqlCommands command type to stored procedure so the database knows what to look for
                     createEnemy.CommandType = System.Data.CommandType.StoredProcedure;
@@ -266,7 +266,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand pullEnemyByName = new SqlCommand("ENEMY_PULL_BY_NAME", sqlConnection))
+                using (SqlCommand pullEnemyByName = new SqlCommand("ENEMIES_VIEW_BY_NAME", sqlConnection))
                 {
                     pullEnemyByName.CommandType = System.Data.CommandType.StoredProcedure;
 

@@ -10,3 +10,9 @@ C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_C
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.dll
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.pdb
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.csprojAssemblyReference.cache
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\bin\Debug\KH_Capstone_DAL.dll
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\bin\Debug\KH_Capstone_DAL.pdb
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.csprojAssemblyReference.cache
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.csproj.CoreCompileInputs.cache
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.dll
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_DAL\obj\Debug\KH_Capstone_DAL.pdb

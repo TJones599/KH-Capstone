@@ -3,3 +3,9 @@ C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\bin\Debug\KH_C
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.csproj.CoreCompileInputs.cache
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.dll
 C:\Users\Tyler Jones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.pdb
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\bin\Debug\KH_Capstone_BLL.dll
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\bin\Debug\KH_Capstone_BLL.pdb
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.csprojAssemblyReference.cache
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.csproj.CoreCompileInputs.cache
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.dll
+C:\Users\tjones\Documents\GitHub\KH-Capstone\KH_Capstone_BLL\obj\Debug\KH_Capstone_BLL.pdb

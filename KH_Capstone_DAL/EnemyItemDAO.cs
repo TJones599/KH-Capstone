@@ -22,7 +22,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand CreateEnemyDetails = new SqlCommand("ENEMY_ITEM_CREATE", sqlConnection))
+                using (SqlCommand CreateEnemyDetails = new SqlCommand("ENEMYDROPS_CREATE", sqlConnection))
                 {
                     CreateEnemyDetails.CommandType = CommandType.StoredProcedure;
 
@@ -46,7 +46,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand DeleteEnemyItem = new SqlCommand("ENEMY_ITEM_DELETE", sqlConnection))
+                using (SqlCommand DeleteEnemyItem = new SqlCommand("ENEMYDROPS_DELETE", sqlConnection))
                 {
                     DeleteEnemyItem.CommandType = CommandType.StoredProcedure;
 
@@ -69,7 +69,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand UpdateEnemyLink = new SqlCommand("ENEMY_ITEM_UPDATE", sqlConnection))
+                using (SqlCommand UpdateEnemyLink = new SqlCommand("ENEMYDROPS_UPDATE", sqlConnection))
                 {
                     UpdateEnemyLink.CommandType = CommandType.StoredProcedure;
 
@@ -95,14 +95,14 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand PullEnemyDetails = new SqlCommand("ENEMY_ITEM_PULL_BY_ENEMYID", sqlConnection))
+                using (SqlCommand PullEnemyDrops = new SqlCommand("ENEMYDROPS_BY_ENEMYID", sqlConnection))
                 {
-                    PullEnemyDetails.CommandType = CommandType.StoredProcedure;
+                    PullEnemyDrops.CommandType = CommandType.StoredProcedure;
 
-                    PullEnemyDetails.Parameters.AddWithValue("EnemyID", id);
+                    PullEnemyDrops.Parameters.AddWithValue("EnemyID", id);
 
                     sqlConnection.Open();
-                    using (SqlDataReader reader = PullEnemyDetails.ExecuteReader())
+                    using (SqlDataReader reader = PullEnemyDrops.ExecuteReader())
                     {
                         while(reader.Read())
                         {
@@ -133,7 +133,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand ViewByItem = new SqlCommand("ENEMY_ITEM_PULL_BY_ITEMID", sqlConnection))
+                using (SqlCommand ViewByItem = new SqlCommand("ENEMYDROPS_BY_DROPID", sqlConnection))
                 {
                     ViewByItem.CommandType = CommandType.StoredProcedure;
 
@@ -171,7 +171,7 @@ namespace KH_Capstone_DAL
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))
-                using (SqlCommand pullAllLinks = new SqlCommand("ENEMY_ITEM_PULL_ALL", sqlConnection))
+                using (SqlCommand pullAllLinks = new SqlCommand("ENEMYDROPS_VIEW_ALL", sqlConnection))
                 {
                     pullAllLinks.CommandType = CommandType.StoredProcedure;
 
